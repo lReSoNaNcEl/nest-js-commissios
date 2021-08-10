@@ -1,2 +1,5 @@
 [*]
 indent_size = 4
+
+[/docker-compose.yml]
+indent_size = unset

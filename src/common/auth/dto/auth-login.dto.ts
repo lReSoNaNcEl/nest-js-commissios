@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import faker from "faker";
+import * as faker from "faker";
 import { IsEmail, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class AuthLoginDto {
