@@ -4,7 +4,7 @@ services:
   server:
     container_name: server
     build: .
-    env_file: .env
+    env_file: .env.dev
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -12,6 +12,8 @@ services:
       - postgres
     networks:
       - network
+    extra_hosts:
+      - "localhost:127.0.0.1"
 
   postgres:
     container_name: postgres
