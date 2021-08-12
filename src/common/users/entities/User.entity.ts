@@ -1,4 +1,4 @@
-import {Model} from '../../../core/database/entities/Model'
+import {Model} from '../../../core/database/entities/model'
 import {Column, Entity, JoinColumn, OneToMany, OneToOne, BeforeInsert} from 'typeorm'
 import {Exclude} from 'class-transformer'
 import {IUser} from '../interfaces/user.interface'

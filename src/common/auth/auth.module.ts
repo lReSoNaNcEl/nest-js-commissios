@@ -6,6 +6,7 @@ import {TypeOrmModule} from '@nestjs/typeorm'
 import {JwtStrategy} from './jwt.strategy'
 import {PassportModule} from '@nestjs/passport'
 import {UsersRepository} from '../users/users.repository'
+import { FilesModule } from "../files/files.module";
 
 @Module({
     imports: [
@@ -14,7 +15,8 @@ import {UsersRepository} from '../users/users.repository'
             defaultStrategy: 'jwt',
             property: 'user',
             session: false
-        })
+        }),
+        FilesModule
     ],
     controllers: [AuthController],
     providers: [AuthService, UsersService, JwtStrategy]

@@ -7,7 +7,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
 
     constructor(private configService: ConfigService) {}
 
-    public createTypeOrmOptions(): TypeOrmModuleOptions {
+    createTypeOrmOptions(): TypeOrmModuleOptions {
         return <TypeOrmModuleOptions>this.configService.get('app.database')
     }
 

@@ -6,6 +6,11 @@ import {DatabaseConfig} from "./core/config/database.config"
 import {TypeOrmModule} from "@nestjs/typeorm";
 import { AuthModule } from "./common/auth/auth.module";
 import { UsersModule } from "./common/users/users.module";
+import { MulterModule } from "@nestjs/platform-express";
+import { MulterConfig } from "./core/config/multer.config";
+import { Connection } from "typeorm";
+import { CreateSourcesSeed } from "./core/database/seeds/create-sources.seed";
+import { CommissionsModule } from "./common/commissions/index/commissions.module";
 
 @Module({
     imports: [
@@ -13,15 +18,24 @@ import { UsersModule } from "./common/users/users.module";
             isGlobal: true,
             load: [ApplicationConfig]
         }),
+        MulterModule.registerAsync({
+            useClass: MulterConfig
+        }),
         TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
             useClass: DatabaseConfig,
         }),
         EventEmitterModule.forRoot(),
         AuthModule,
-        UsersModule
+        UsersModule,
+        CommissionsModule
     ]
 })
 export class AppModule {
+
+    constructor(private connection: Connection) {}
+
+    async onModuleInit() {
+        await CreateSourcesSeed(this.connection)
+    }
 
 }
