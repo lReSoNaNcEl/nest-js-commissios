@@ -3,7 +3,7 @@ import {Injectable, NotFoundException} from '@nestjs/common'
 import {User} from './entities/User.entity'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UsersRepository} from './users.repository'
-import {IAuthCredentials} from '../auth/interfaces/auth-credentials.interface'
+import { AuthSignupDto } from "../auth/dto/auth-signup.dto";
 
 @Injectable()
 export class UsersService implements IUsersService {
@@ -13,8 +13,8 @@ export class UsersService implements IUsersService {
         private usersRepository: UsersRepository,
     ) {}
 
-    createUser(credentials: IAuthCredentials): Promise<User> {
-        const user = this.usersRepository.create(credentials)
+    createUser(dto: AuthSignupDto): Promise<User> {
+        const user = this.usersRepository.create(dto)
         return this.usersRepository.save(user)
     }
 

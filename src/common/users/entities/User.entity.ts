@@ -1,7 +1,7 @@
 import {Model} from '../../../core/database/entities/model'
 import {Column, Entity, JoinColumn, OneToMany, OneToOne, BeforeInsert} from 'typeorm'
 import {Exclude} from 'class-transformer'
-import {IUser} from '../interfaces/user.interface'
+import { IUser, Roles } from "../interfaces/user.interface";
 import * as bcrypt from 'bcrypt'
 
 @Entity('users')
@@ -13,6 +13,12 @@ export class User extends Model implements IUser {
     @Exclude({toPlainOnly: true})
     @Column()
     password: string
+
+    @Column()
+    name: string
+
+    @Column({type: 'enum', enum: Roles, default: Roles.IMPLEMENTOR})
+    role: Roles
 
     @BeforeInsert()
     hashPassword() {

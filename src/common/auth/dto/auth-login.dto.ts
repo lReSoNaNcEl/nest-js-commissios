@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class AuthLoginDto {
 
-    @ApiProperty({example: faker.name.jobArea()})
+    @ApiProperty({example: faker.internet.email()})
     @IsString()
     @IsEmail()
     @IsNotEmpty()
