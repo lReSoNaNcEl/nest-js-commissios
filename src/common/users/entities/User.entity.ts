@@ -24,5 +24,4 @@ export class User extends Model implements IUser {
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10))
     }
-
 }

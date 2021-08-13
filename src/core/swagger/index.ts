@@ -7,6 +7,7 @@ export class Swagger {
         .setTitle('Api Docs')
         .setDescription('ITC API')
         .setVersion('1.0')
+        .addBearerAuth({type: 'http', scheme: 'Bearer', bearerFormat: 'Bearer'})
         .build()
 
     public static use(app: INestApplication) {

@@ -1,5 +1,5 @@
-import { Module } from "@nestjs/common";
-import { EventEmitterModule } from "@nestjs/event-emitter"
+import {CacheModule, Module} from "@nestjs/common";
+import {EventEmitterModule} from "@nestjs/event-emitter"
 import {ConfigModule} from "@nestjs/config"
 import {ApplicationConfig} from "./core/config";
 import {DatabaseConfig} from "./core/config/database.config"
@@ -13,6 +13,7 @@ import { CreateSourcesSeed } from "./core/database/seeds/create-sources.seed";
 import { CommissionsModule } from "./common/commissions/index/commissions.module";
 import { ServeStaticModule } from "@nestjs/serve-static"
 import {join} from 'path'
+import { CreateCategoriesSeed } from "./core/database/seeds/create-categories.seed";
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import {join} from 'path'
              rootPath: join(__dirname, '..', 'static')
         }),
         EventEmitterModule.forRoot(),
+        CacheModule.register(),
         AuthModule,
         UsersModule,
         CommissionsModule
@@ -37,10 +39,9 @@ import {join} from 'path'
 })
 export class AppModule {
 
-    constructor(private connection: Connection) {}
-
     async onModuleInit() {
-        await CreateSourcesSeed(this.connection)
+        await CreateSourcesSeed()
+        await CreateCategoriesSeed()
     }
 
 }

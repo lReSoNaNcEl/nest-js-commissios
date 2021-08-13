@@ -4,7 +4,7 @@ import { SourcesService } from "./sources.service";
 import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Sources Of Commission')
-@Controller('sources')
+@Controller('commissions/sources')
 export class SourcesController implements ISourcesController {
 
     constructor(

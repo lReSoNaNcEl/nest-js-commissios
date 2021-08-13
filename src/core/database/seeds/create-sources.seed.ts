@@ -1,7 +1,7 @@
 import {Connection, Repository, getRepository} from 'typeorm'
 import {Source} from "../../../common/commissions/sources/entities/Source.entity"
 
-export const CreateSourcesSeed = async (connection: Connection) => {
+export const CreateSourcesSeed = async () => {
     const repository: Repository<Source> = getRepository(Source)
 
     const sources = [

@@ -1,7 +1,11 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import {Swagger} from "./core/swagger"
-import { ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common"
+import * as NodeCache from 'node-cache'
+
+export const cache = new NodeCache({stdTTL: 5})
+
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {cors: {origin: '*'}})
