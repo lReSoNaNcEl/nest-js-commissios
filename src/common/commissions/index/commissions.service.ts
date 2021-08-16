@@ -56,14 +56,12 @@ export class CommissionsService implements ICommissionsService {
     getCommissions(): Promise<any> {
         const user: User = cache.get(Cache.CURRENT_USER)
 
-        console.log(user)
-
         switch (user.role) {
             case Roles.ADMIN: {
                 return this.commissionsRepository.getCommissionsOfAdmin()
             }
             case Roles.IMPLEMENTOR: {
-                return  this.commissionsRepository.getCommissionsOfImplementor(user.id)
+                return this.commissionsRepository.getCommissionsOfImplementor(user.id)
             }
         }
 

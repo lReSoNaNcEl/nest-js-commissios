@@ -1,5 +1,5 @@
 import { Model } from "../../../../core/database/entities/model"
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, RelationId } from "typeorm";
 import { CommissionImportance, CommissionLevel, CommissionRate, ICommission } from "../interfaces/commission.interface";
 import { Category } from "../../categories/enitities/Category.entity"
 import { Source } from "../../sources/entities/Source.entity";
@@ -42,15 +42,29 @@ export class Commission extends Model implements ICommission {
     @Column({type: 'timestamp', nullable: true})
     registrationCardDate: string
 
-    @Transform(({value}) => value.title)
+    @Transform(({value}) => {
+        if (value) return value.title
+        return null
+    })
+    @JoinTable()
     @ManyToOne(() => Category, category => category.commissions)
     category: Category
 
-    @Transform(({value}) => value.title)
+    @Transform(({value}) => {
+        if (value) return value.title
+        return null
+    })
+    @JoinColumn()
     @ManyToOne(() => Source, source => source.commissions)
     source: Source
 
     @OneToMany(() => Report, report => report.commission)
     reports: Report[]
+
+    @RelationId((commission: Commission) => commission.category)
+    categoryId: number
+
+    @RelationId((commission: Commission) => commission.source)
+    sourceId: number
 
 }

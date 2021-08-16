@@ -2,6 +2,7 @@ import { ICommissionsRepository } from "./interfaces/commissions-repository.inte
 import { EntityRepository, Repository } from "typeorm";
 import { Commission } from "./entities/Commission.entity";
 import { NotFoundException } from "@nestjs/common";
+import { Report } from "../reports/index/entities/Report.entity";
 
 @EntityRepository(Commission)
 export class CommissionsRepository extends Repository<Commission> implements ICommissionsRepository {
@@ -18,12 +19,16 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     }
 
     getCommissionsOfAdmin(): Promise<Commission[]> {
-        return this.find()
+        return this.find({
+            relations: ['category', 'source']
+        })
     }
 
     getCommissionsOfImplementor(userId: number): Promise<Commission[]> {
         return this.createQueryBuilder('commission')
-            // .where('user.id = :userId', {userId})
+            .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .leftJoinAndSelect('commission.category', 'category')
+            .leftJoinAndSelect('commission.source', 'source')
             .getMany()
     }
 
