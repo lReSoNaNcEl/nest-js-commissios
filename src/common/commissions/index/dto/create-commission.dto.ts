@@ -64,15 +64,15 @@ export class CreateCommissionDto {
     @IsOptional()
     registrationCardDate: string
 
-    @ApiProperty({example: faker.datatype.number(20), required: false})
+    @ApiProperty({default: null, example: faker.datatype.number(20), required: false})
     @IsNumber()
     @IsOptional()
-    categoryId: number
+    categoryId: number = null
 
-    @ApiProperty({example: faker.datatype.number(20), required: false})
+    @ApiProperty({default: null, example: faker.datatype.number(20), required: false})
     @IsNumber()
     @IsOptional()
-    sourceId: number
+    sourceId: number = null
 
     @ApiProperty({type: Array, example: Array(3).fill(null).map(() => faker.datatype.number(20))})
     @ArrayMinSize(1)

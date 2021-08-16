@@ -4,6 +4,7 @@ import { CommissionImportance, CommissionLevel, CommissionRate, ICommission } fr
 import { Category } from "../../categories/enitities/Category.entity"
 import { Source } from "../../sources/entities/Source.entity";
 import { Report } from "../../reports/index/entities/Report.entity";
+import { Transform } from "class-transformer";
 
 @Entity('commissions')
 export class Commission extends Model implements ICommission {
@@ -41,9 +42,11 @@ export class Commission extends Model implements ICommission {
     @Column({type: 'timestamp', nullable: true})
     registrationCardDate: string
 
+    @Transform(({value}) => value.title)
     @ManyToOne(() => Category, category => category.commissions)
     category: Category
 
+    @Transform(({value}) => value.title)
     @ManyToOne(() => Source, source => source.commissions)
     source: Source
 

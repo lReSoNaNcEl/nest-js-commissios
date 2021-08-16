@@ -16,4 +16,8 @@ export class SourcesService implements ISourcesService {
         return this.sourcesRepository.find()
     }
 
+    getSource(sourceId: number): Promise<Source> {
+        return this.sourcesRepository.getSource(sourceId)
+    }
+
 }

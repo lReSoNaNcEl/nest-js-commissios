@@ -7,6 +7,7 @@ import { Report } from "./entities/Report.entity";
 import { UsersService } from "../../../users/users.service";
 import { CommissionsService } from "../../index/commissions.service";
 import { ModuleRef } from "@nestjs/core";
+import { User } from "../../../users/entities/User.entity";
 
 @Injectable()
 export class ReportsService implements IReportsService, OnModuleInit {
@@ -22,7 +23,7 @@ export class ReportsService implements IReportsService, OnModuleInit {
 
     //@@@ Импорт сервиса через хук нужен, чтобы не происходило циклических зависимостей - https://docs.nestjs.com/fundamentals/circular-dependency
     onModuleInit() {
-        this.commissionsService = this.moduleRef.get(CommissionsService)
+        this.commissionsService = this.moduleRef.get<CommissionsService>(CommissionsService)
     }
 
     async createReport(dto: CreateReportDto): Promise<Report> {
@@ -33,6 +34,13 @@ export class ReportsService implements IReportsService, OnModuleInit {
         const report = this.reportsRepository.create({user, commission})
 
         return this.reportsRepository.save(report)
+    }
+
+    async createManyReports(users: User[], commissionId: number): Promise<Report[]> {
+        return Promise.all(await users.map(async ({id}) => {
+            const dto = <CreateReportDto>{userId: id, commissionId}
+            return await this.createReport(dto)
+        }))
     }
 
 }

@@ -16,4 +16,8 @@ export class CategoriesService implements ICategoriesService {
         return this.categoriesRepository.find()
     }
 
+    getCategory(categoryId: number): Promise<Category> {
+        return this.categoriesRepository.getCategory(categoryId)
+    }
+
 }

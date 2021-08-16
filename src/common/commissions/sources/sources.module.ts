@@ -9,6 +9,7 @@ import { SourcesRepository } from "./sources.repository";
         TypeOrmModule.forFeature([SourcesRepository])
     ],
     controllers: [SourcesController],
-    providers: [SourcesService]
+    providers: [SourcesService],
+    exports: [SourcesService]
 })
 export class SourcesModule {}

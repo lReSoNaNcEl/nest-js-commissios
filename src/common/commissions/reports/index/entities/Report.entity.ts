@@ -2,7 +2,7 @@ import { Model } from "../../../../../core/database/entities/model";
 import { IReport } from "../interfaces/report.interface";
 import { Commission } from "../../../index/entities/Commission.entity";
 import { User } from "../../../../users/entities/User.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 
 export enum ReportStatus {
     WORK = 'work',
@@ -29,5 +29,12 @@ export class Report extends Model implements IReport {
 
     @ManyToOne(() => Commission, commission => commission.reports)
     commission: Commission
+
+    @RelationId((report: Report) => report.user)
+    userId: number
+
+    @RelationId((report: Report) => report.user)
+    commissionId: number
+
 
 }
