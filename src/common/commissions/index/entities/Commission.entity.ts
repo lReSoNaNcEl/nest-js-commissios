@@ -1,8 +1,9 @@
 import { Model } from "../../../../core/database/entities/model"
-import { Column, Entity, ManyToOne } from "typeorm"
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { CommissionImportance, CommissionLevel, CommissionRate, ICommission } from "../interfaces/commission.interface";
 import { Category } from "../../categories/enitities/Category.entity"
 import { Source } from "../../sources/entities/Source.entity";
+import { Report } from "../../reports/index/entities/Report.entity";
 
 @Entity('commissions')
 export class Commission extends Model implements ICommission {
@@ -16,16 +17,16 @@ export class Commission extends Model implements ICommission {
     @Column({type: 'enum', enum: CommissionImportance, default: CommissionImportance.USUALLY})
     importance: CommissionImportance
 
-    @Column({type: 'enum', enum: CommissionLevel})
+    @Column({type: 'enum', enum: CommissionLevel, nullable: true})
     level: CommissionLevel
 
-    @Column({type: 'enum', enum: CommissionRate, default: null, nullable: true})
+    @Column({type: 'enum', enum: CommissionRate, default: CommissionRate.ONCE})
     rate: CommissionRate
 
     @Column({nullable: true})
     registrationCardNumber: string
 
-    @Column({nullable: true})
+    @Column()
     positionNumber: string
 
     @Column({nullable: true})
@@ -45,5 +46,8 @@ export class Commission extends Model implements ICommission {
 
     @ManyToOne(() => Source, source => source.commissions)
     source: Source
+
+    @OneToMany(() => Report, report => report.commission)
+    reports: Report[]
 
 }

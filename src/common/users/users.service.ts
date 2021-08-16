@@ -4,6 +4,7 @@ import {User} from './entities/User.entity'
 import {InjectRepository} from '@nestjs/typeorm'
 import {UsersRepository} from './users.repository'
 import { AuthSignupDto } from "../auth/dto/auth-signup.dto";
+import { Roles } from "./interfaces/user.interface";
 
 @Injectable()
 export class UsersService implements IUsersService {
@@ -20,8 +21,12 @@ export class UsersService implements IUsersService {
 
     async getUser(userId: number): Promise<User> {
         const user = await this.usersRepository.getUser(userId)
-        if (!user) throw new NotFoundException(`Пользователя с идентификатором ${userId} не существует`)
+        if (!user) throw new NotFoundException(`User with ID ${userId} not found!`)
         return user
+    }
+
+    getUsersByRole(role: Roles): Promise<User[]> {
+        return this.usersRepository.getUsersByRole(role)
     }
 
 }

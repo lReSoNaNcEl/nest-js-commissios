@@ -3,6 +3,7 @@ import { AppModule } from "./app.module";
 import {Swagger} from "./core/swagger"
 import { ValidationPipe } from "@nestjs/common"
 import * as NodeCache from 'node-cache'
+import {initializeTransactionalContext} from "typeorm-transactional-cls-hooked";
 
 export const cache = new NodeCache({stdTTL: 5})
 
@@ -13,6 +14,7 @@ async function bootstrap() {
     app.setGlobalPrefix('api')
     app.useGlobalPipes(new ValidationPipe({transform: true}))
     app.enableShutdownHooks()
+    initializeTransactionalContext()
     Swagger.use(app)
 
     await app.listen(process.env.PORT || 3000).then(() => {

@@ -1,21 +1,29 @@
 import { ICommissionsRepository } from "./interfaces/commissions-repository.interface";
 import { EntityRepository, Repository } from "typeorm";
 import { Commission } from "./entities/Commission.entity";
-import { User } from "../../users/entities/User.entity";
+import { NotFoundException } from "@nestjs/common";
 
 @EntityRepository(Commission)
 export class CommissionsRepository extends Repository<Commission> implements ICommissionsRepository {
 
-    getCommissionsOfAdmin(user: User): Promise<Commission[]> {
-        return this.find({
-            where: {user}
+    getCommission(commissionId: number): Promise<Commission> {
+        const commission = this.findOne({
+            where: {
+                id: commissionId
+            },
+            relations: ['reports', 'category', 'source']
         })
+        if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
+        return commission
     }
 
-    getCommissionsOfImplementor(user: User): Promise<Commission[]> {
+    getCommissionsOfAdmin(): Promise<Commission[]> {
+        return this.find()
+    }
+
+    getCommissionsOfImplementor(userId: number): Promise<Commission[]> {
         return this.createQueryBuilder('commission')
-            .leftJoin('commission.user', 'user')
-            .where('user.id = :userId', {userId: user.id})
+            // .where('user.id = :userId', {userId})
             .getMany()
     }
 

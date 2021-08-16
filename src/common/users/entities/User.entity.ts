@@ -3,8 +3,9 @@ import {Column, Entity, JoinColumn, OneToMany, OneToOne, BeforeInsert} from 'typ
 import {Exclude} from 'class-transformer'
 import { IUser, Roles } from "../interfaces/user.interface";
 import * as bcrypt from 'bcrypt'
+import { Report } from 'src/common/commissions/reports/index/entities/Report.entity';
 
-@Entity('users')
+@Entity("users")
 export class User extends Model implements IUser {
 
     @Column({unique: true, length: 20})
@@ -19,6 +20,9 @@ export class User extends Model implements IUser {
 
     @Column({type: 'enum', enum: Roles, default: Roles.IMPLEMENTOR})
     role: Roles
+
+    @OneToMany(() => Report, report => report.user)
+    reports: Report[]
 
     @BeforeInsert()
     hashPassword() {

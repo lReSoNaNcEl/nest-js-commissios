@@ -1,75 +1,84 @@
-import { Column, ManyToOne } from "typeorm";
-import { CommissionImportance, CommissionLevel } from "../interfaces/commission.interface";
-import { Category } from "../../categories/enitities/Category.entity";
-import { Source } from "../../sources/entities/Source.entity";
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { CommissionImportance, CommissionLevel, CommissionRate } from "../interfaces/commission.interface";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsPositive, ArrayMinSize } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
+import * as faker from "faker";
 
 export class CreateCommissionDto {
 
-    @ApiProperty()
+    @ApiProperty({example: faker.lorem.word(5)})
     @IsString()
     @IsNotEmpty()
     title: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.lorem.text(10)})
     @IsString()
     @IsNotEmpty()
     text: string
 
-    @ApiProperty()
+    @ApiProperty({enum: CommissionImportance, default: CommissionImportance.USUALLY, required: false})
     @IsEnum(CommissionImportance)
     @IsOptional()
     importance: CommissionImportance
 
-    @ApiProperty()
+    @ApiProperty({enum: CommissionLevel, nullable: true, required: false})
     @IsEnum(CommissionLevel)
     @IsOptional()
     level: CommissionLevel
 
+    @ApiProperty({enum: CommissionRate, default: CommissionRate.ONCE, required: false})
+    @IsEnum(CommissionRate)
+    @IsOptional()
+    rate: CommissionRate
 
-    rate: string
-
-    @ApiProperty()
+    @ApiProperty({example: faker.finance.creditCardNumber(), required: false})
     @IsString()
     @IsOptional()
     registrationCardNumber: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.finance.currencyCode()})
     @IsString()
-    @IsOptional()
+    @IsNotEmpty()
     positionNumber: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.finance.routingNumber(), required: false})
     @IsString()
     @IsOptional()
     sourceNumber: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.date.recent()})
     @IsDate()
     @Type(() => Date)
     @IsNotEmpty()
     release: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.date.soon()})
     @IsDate()
     @Type(() => Date)
     @IsNotEmpty()
     expiration: string
 
-    @ApiProperty()
+    @ApiProperty({example: faker.date.past(), required: false})
     @IsDate()
     @Type(() => Date)
     @IsOptional()
     registrationCardDate: string
 
+    @ApiProperty({example: faker.datatype.number(20), required: false})
     @IsNumber()
     @IsOptional()
     categoryId: number
 
+    @ApiProperty({example: faker.datatype.number(20), required: false})
     @IsNumber()
     @IsOptional()
     sourceId: number
+
+    @ApiProperty({type: Array, example: Array(3).fill(null).map(() => faker.datatype.number(20))})
+    @ArrayMinSize(1)
+    @IsNumber({}, {each: true})
+    @IsPositive({each: true})
+    @IsNotEmpty()
+    implementors: number[]
 
 }

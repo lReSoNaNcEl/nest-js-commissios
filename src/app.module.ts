@@ -14,6 +14,7 @@ import { CommissionsModule } from "./common/commissions/index/commissions.module
 import { ServeStaticModule } from "@nestjs/serve-static"
 import {join} from 'path'
 import { CreateCategoriesSeed } from "./core/database/seeds/create-categories.seed";
+import { ReportsModule } from "./common/commissions/reports/index/reports.module";
 
 @Module({
     imports: [

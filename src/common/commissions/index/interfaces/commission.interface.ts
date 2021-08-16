@@ -13,7 +13,7 @@ export enum CommissionLevel {
 }
 
 export enum CommissionRate {
-
+    ONCE = 'once'
 }
 
 export interface ICommission {

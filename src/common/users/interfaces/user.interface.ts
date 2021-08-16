@@ -1,3 +1,5 @@
+import { Report } from "../../commissions/reports/index/entities/Report.entity";
+
 export enum Roles {
     IMPLEMENTOR = 'implementor',
     ADMIN = 'admin'
@@ -9,4 +11,5 @@ export interface IUser {
     password: string
     name: string
     role: Roles
+    reports: Report[]
 }
