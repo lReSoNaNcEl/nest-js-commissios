@@ -4,7 +4,8 @@ import {Commission} from "../../../common/commissions/index/entities/Commission.
 import { Source } from "../../../common/commissions/sources/entities/Source.entity";
 import { Report } from "../../../common/commissions/reports/index/entities/Report.entity";
 import { CommissionDocument } from "../../../common/commissions/documents/entities/CommissionDocument.entity";
+import { ReportDocument } from "../../../common/commissions/reports/documents/entities/ReportDocument.entity";
 
 export const entities = [
-    User, Category, Commission, Source, Report, CommissionDocument
+    User, Category, Commission, Source, Report, CommissionDocument, ReportDocument
 ]

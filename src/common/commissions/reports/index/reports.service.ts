@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ReportsRepository } from "./reports.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IReportsService } from "./interfaces/reports-service.interface";
@@ -12,7 +12,7 @@ import { User } from "../../../users/entities/User.entity";
 @Injectable()
 export class ReportsService implements IReportsService, OnModuleInit {
 
-    commissionsService: CommissionsService
+    private commissionsService: CommissionsService
 
     constructor(
         @InjectRepository(ReportsRepository)
@@ -24,6 +24,10 @@ export class ReportsService implements IReportsService, OnModuleInit {
     //@@@ Импорт сервиса через хук нужен, чтобы не происходило циклических зависимостей - https://docs.nestjs.com/fundamentals/circular-dependency
     onModuleInit() {
         this.commissionsService = this.moduleRef.get<CommissionsService>(CommissionsService)
+    }
+
+    async getReport(reportId: number): Promise<Report> {
+        return this.reportsRepository.getReport(reportId)
     }
 
     async createReport(dto: CreateReportDto): Promise<Report> {

@@ -12,7 +12,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             where: {
                 id: commissionId
             },
-            relations: ['reports', 'category', 'source']
+            relations: ['reports', 'reports.documents', 'category', 'source', 'documents']
         })
         if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
         return commission
@@ -27,8 +27,10 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     getCommissionsOfImplementor(userId: number): Promise<Commission[]> {
         return this.createQueryBuilder('commission')
             .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .leftJoinAndSelect('report.documents', 'document')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
+            .leftJoinAndSelect('commission.documents', 'documents')
             .getMany()
     }
 

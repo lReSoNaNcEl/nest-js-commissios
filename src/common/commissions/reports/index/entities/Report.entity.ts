@@ -2,7 +2,8 @@ import { Model } from "../../../../../core/database/entities/model";
 import { IReport } from "../interfaces/report.interface";
 import { Commission } from "../../../index/entities/Commission.entity";
 import { User } from "../../../../users/entities/User.entity";
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from "typeorm";
+import { ReportDocument } from "../../documents/entities/ReportDocument.entity";
 
 export enum ReportStatus {
     WORK = 'work',
@@ -22,13 +23,14 @@ export class Report extends Model implements IReport {
     @Column({type: 'timestamp', nullable: true})
     confirmed: string
 
-    document: any
-
     @ManyToOne(() => User, user => user.reports)
     user: User
 
     @ManyToOne(() => Commission, commission => commission.reports)
     commission: Commission
+
+    @OneToMany(() => ReportDocument, document => document.report)
+    documents: ReportDocument[]
 
     @RelationId((report: Report) => report.user)
     userId: number

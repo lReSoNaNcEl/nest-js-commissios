@@ -1,14 +1,14 @@
 import { Controller, Param, ParseIntPipe, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { FilesInterceptor } from "@nestjs/platform-express";
-import { multerOptions } from "../../files/filters/documents-files.filter";
-import { CommissionDocument } from "./entities/CommissionDocument.entity";
+import {multerOptions} from "../../../files/filters/documents-files.filter"
+import {ReportDocument} from "./entities/ReportDocument.entity";
 import { IDocumentsController } from "./interfaces/documents-controller.inteface";
-import {Auth} from "../../auth/auth.decorator";
+import {Auth} from "../../../auth/auth.decorator";
 import { DocumentsService } from "./documents.service";
 
-@ApiTags('Documents Of Commission')
-@Controller('commissions/:commissionId/documents')
+@ApiTags('Documents Of Report')
+@Controller('reports/:reportId/documents')
 export class DocumentsController implements IDocumentsController {
 
     constructor(
@@ -18,11 +18,11 @@ export class DocumentsController implements IDocumentsController {
     @Auth()
     @Post()
     @UseInterceptors(FilesInterceptor('files', 10, multerOptions))
-    async uploadDocumentsOfCommission(
+    async uploadDocumentsOfReport(
         @UploadedFiles() files: Express.Multer.File[],
-        @Param('commissionId', ParseIntPipe) commissionId: number
-    ): Promise<CommissionDocument[]> {
-        return this.documentsService.uploadDocumentsOfCommission(files, commissionId)
+        @Param('reportId', ParseIntPipe) reportId: number
+    ): Promise<ReportDocument[]> {
+        return this.documentsService.uploadDocumentsOfReport(files, reportId)
     }
 
 }
