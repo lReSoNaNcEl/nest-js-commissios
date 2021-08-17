@@ -14,7 +14,7 @@ import { CommissionsModule } from "./common/commissions/index/commissions.module
 import { ServeStaticModule } from "@nestjs/serve-static"
 import {join} from 'path'
 import { CreateCategoriesSeed } from "./core/database/seeds/create-categories.seed";
-import { ReportsModule } from "./common/commissions/reports/index/reports.module";
+import { StaticConfig } from "./core/config/static.config";
 
 @Module({
     imports: [
@@ -22,17 +22,10 @@ import { ReportsModule } from "./common/commissions/reports/index/reports.module
             isGlobal: true,
             load: [ApplicationConfig]
         }),
-        MulterModule.registerAsync({
-            useClass: MulterConfig
-        }),
-        TypeOrmModule.forRootAsync({
-            useClass: DatabaseConfig,
-        }),
-        ServeStaticModule.forRoot({
-             rootPath: join(__dirname, '..', 'static')
-        }),
+        MulterModule.registerAsync({useClass: MulterConfig}),
+        TypeOrmModule.forRootAsync({useClass: DatabaseConfig}),
+        ServeStaticModule.forRootAsync({useClass: StaticConfig}),
         EventEmitterModule.forRoot(),
-        CacheModule.register(),
         AuthModule,
         UsersModule,
         CommissionsModule

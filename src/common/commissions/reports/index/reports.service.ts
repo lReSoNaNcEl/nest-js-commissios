@@ -37,9 +37,9 @@ export class ReportsService implements IReportsService, OnModuleInit {
     }
 
     async createManyReports(users: User[], commissionId: number): Promise<Report[]> {
-        return Promise.all(await users.map(async ({id}) => {
+        return Promise.all(await users.map(({id}) => {
             const dto = <CreateReportDto>{userId: id, commissionId}
-            return await this.createReport(dto)
+            return this.createReport(dto)
         }))
     }
 

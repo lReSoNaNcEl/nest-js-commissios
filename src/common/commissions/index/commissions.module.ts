@@ -7,6 +7,7 @@ import { CommissionsRepository } from "./commissions.repository";
 import { CategoriesModule } from "../categories/categories.module";
 import { ReportsModule } from "../reports/index/reports.module";
 import { UsersRepository } from "../../users/users.repository";
+import { DocumentsModule } from "../documents/documents.module";
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { UsersRepository } from "../../users/users.repository";
         SourcesModule,
         CategoriesModule,
         ReportsModule,
+        DocumentsModule
     ],
     controllers: [CommissionsController],
     providers: [CommissionsService],

@@ -1,5 +1,15 @@
 import { CommissionImportance, CommissionLevel, CommissionRate } from "../interfaces/commission.interface";
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsPositive, ArrayMinSize } from "class-validator";
+import {
+    IsDate,
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    IsPositive,
+    ArrayMinSize,
+    Max, MaxLength
+} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import * as faker from "faker";
@@ -8,11 +18,13 @@ export class CreateCommissionDto {
 
     @ApiProperty({example: faker.lorem.word(5)})
     @IsString()
+    @MaxLength(255)
     @IsNotEmpty()
     title: string
 
     @ApiProperty({example: faker.lorem.text(10)})
     @IsString()
+    @MaxLength(2000)
     @IsNotEmpty()
     text: string
 

@@ -1,5 +1,5 @@
 import { ICommissionsController } from "./interfaces/commissions-controller.interface";
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Commission } from "./entities/Commission.entity";
 import { CommissionsService } from "./commissions.service";
@@ -29,7 +29,7 @@ export class CommissionsController implements ICommissionsController {
 
     @Auth(Roles.ADMIN)
     @Post()
-    createCommission(@Body() dto: CreateCommissionDto): Promise<Commission> {
+    createCommission(@Body() dto: CreateCommissionDto) {
         return this.commissionsService.createCommission(dto)
     }
 

@@ -1,5 +1,6 @@
 import {Category} from "../../categories/enitities/Category.entity";
 import { Source } from "../../sources/entities/Source.entity"
+import { CommissionDocument } from "../../documents/entities/CommissionDocument.entity";
 
 export enum  CommissionImportance {
     IMPORTANT = 'important',
@@ -24,7 +25,8 @@ export interface ICommission {
     rate: CommissionRate
     expiration: string
     category: Category
-    source: Source,
+    source: Source
+    documents: CommissionDocument[]
     release: string
     registrationCardDate: string
     registrationCardNumber: string

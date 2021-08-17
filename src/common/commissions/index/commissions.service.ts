@@ -32,7 +32,7 @@ export class CommissionsService implements ICommissionsService {
     ) {}
 
     @Transactional()
-    async createCommission(dto: CreateCommissionDto) {
+    async createCommission(dto: CreateCommissionDto): Promise<Commission> {
         const {implementors, categoryId, sourceId} = dto
         const users = await this.usersRepository.getImplementorsByIds(implementors)
 
@@ -44,7 +44,7 @@ export class CommissionsService implements ICommissionsService {
         commission = await this.commissionsRepository.save(commission)
         commission.reports = await this.reportsService.createManyReports(users, commission.id)
 
-        await runOnTransactionCommit(async () => commission.save())
+        await runOnTransactionCommit(async () => await commission.save())
 
         return this.getCommission(commission.id)
     }

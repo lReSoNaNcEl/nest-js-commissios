@@ -33,8 +33,7 @@ export class Report extends Model implements IReport {
     @RelationId((report: Report) => report.user)
     userId: number
 
-    @RelationId((report: Report) => report.user)
+    @RelationId((report: Report) => report.commission)
     commissionId: number
-
 
 }

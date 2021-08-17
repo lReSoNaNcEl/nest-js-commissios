@@ -4,4 +4,5 @@ export interface IFile {
     path: string
     filename: string
     originalName: string
+    size: number
 }

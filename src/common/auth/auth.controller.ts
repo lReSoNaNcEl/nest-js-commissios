@@ -26,12 +26,12 @@ export class AuthController implements IAuthController {
     // @Post('test')
     // @UseInterceptors(FileFieldsInterceptor(
     //     [
-    //         { name: 'files', maxCount: 1 }
+    //         { name: 'documents', maxCount: 1 }
     //     ],
     //     multerOptions
     // ))
-    // test(@UploadedFiles() files: Express.Multer.File) {
-    //     console.log(files, 'file')
+    // test(@UploadedFiles() documents: Express.Multer.File) {
+    //     console.log(documents, 'file')
     // }
 }
 

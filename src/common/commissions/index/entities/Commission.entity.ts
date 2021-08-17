@@ -5,6 +5,7 @@ import { Category } from "../../categories/enitities/Category.entity"
 import { Source } from "../../sources/entities/Source.entity";
 import { Report } from "../../reports/index/entities/Report.entity";
 import { Transform } from "class-transformer";
+import { CommissionDocument } from "../../documents/entities/CommissionDocument.entity";
 
 @Entity('commissions')
 export class Commission extends Model implements ICommission {
@@ -66,5 +67,8 @@ export class Commission extends Model implements ICommission {
 
     @RelationId((commission: Commission) => commission.source)
     sourceId: number
+
+    @OneToMany(() => CommissionDocument, document => document.commission)
+    documents: CommissionDocument[]
 
 }
