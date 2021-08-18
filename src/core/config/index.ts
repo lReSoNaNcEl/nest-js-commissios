@@ -28,6 +28,10 @@ export const ApplicationConfig = registerAs('app', () => ({
         subscribers: [...subscribers],
         synchronize: true,
         keepConnectionAlive: true,
+        migrations: [],
+        cli: {
+            migrationsDir: "migrations"
+        }
     },
     multer: <MulterOptions>{
         limits: {

@@ -62,13 +62,13 @@ export class Commission extends Model implements ICommission {
     @OneToMany(() => Report, report => report.commission)
     reports: Report[]
 
+    @OneToMany(() => CommissionDocument, document => document.commission)
+    documents: CommissionDocument[]
+
     @RelationId((commission: Commission) => commission.category)
     categoryId: number
 
     @RelationId((commission: Commission) => commission.source)
     sourceId: number
-
-    @OneToMany(() => CommissionDocument, document => document.commission)
-    documents: CommissionDocument[]
 
 }

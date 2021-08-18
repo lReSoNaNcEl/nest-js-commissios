@@ -10,4 +10,5 @@ export interface IReport {
     commission: Commission
     documents: ReportDocument[]
     confirmed: string
+    freeze: boolean
 }

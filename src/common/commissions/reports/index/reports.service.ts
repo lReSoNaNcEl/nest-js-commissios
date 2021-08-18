@@ -8,18 +8,22 @@ import { UsersService } from "../../../users/users.service";
 import { CommissionsService } from "../../index/commissions.service";
 import { ModuleRef } from "@nestjs/core";
 import { User } from "../../../users/entities/User.entity";
+import { ReviewReportDto } from "./dto/review-report.dto";
 
 @Injectable()
 export class ReportsService implements IReportsService, OnModuleInit {
 
-    private commissionsService: CommissionsService
+    private commissionsService: CommissionsService;
 
     constructor(
         @InjectRepository(ReportsRepository)
         private reportsRepository: ReportsRepository,
         private usersService: UsersService,
         private moduleRef: ModuleRef
-    ) {}
+    ) {
+    }
+
+    sendReportToReview: (dto: ReviewReportDto) => Promise<Report>
 
     //@@@ Импорт сервиса через хук нужен, чтобы не происходило циклических зависимостей - https://docs.nestjs.com/fundamentals/circular-dependency
     onModuleInit() {

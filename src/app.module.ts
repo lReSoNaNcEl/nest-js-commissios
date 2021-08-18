@@ -1,4 +1,4 @@
-import {CacheModule, Module} from "@nestjs/common";
+import {Module} from "@nestjs/common";
 import {EventEmitterModule} from "@nestjs/event-emitter"
 import {ConfigModule} from "@nestjs/config"
 import {ApplicationConfig} from "./core/config";
@@ -8,11 +8,9 @@ import { AuthModule } from "./common/auth/auth.module";
 import { UsersModule } from "./common/users/users.module";
 import { MulterModule } from "@nestjs/platform-express";
 import { MulterConfig } from "./core/config/multer.config"
-import { Connection } from "typeorm";
 import { CreateSourcesSeed } from "./core/database/seeds/create-sources.seed";
 import { CommissionsModule } from "./common/commissions/index/commissions.module";
 import { ServeStaticModule } from "@nestjs/serve-static"
-import {join} from 'path'
 import { CreateCategoriesSeed } from "./core/database/seeds/create-categories.seed";
 import { StaticConfig } from "./core/config/static.config";
 
@@ -28,7 +26,7 @@ import { StaticConfig } from "./core/config/static.config";
         EventEmitterModule.forRoot(),
         AuthModule,
         UsersModule,
-        CommissionsModule
+        CommissionsModule,
     ]
 })
 export class AppModule {

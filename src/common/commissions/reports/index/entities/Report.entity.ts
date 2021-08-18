@@ -8,7 +8,8 @@ import { ReportDocument } from "../../documents/entities/ReportDocument.entity";
 export enum ReportStatus {
     WORK = 'work',
     EXPIRED = 'expired',
-    DONE = 'done'
+    DONE = 'done',
+    RETURNED = 'returned'
 }
 
 @Entity('commissions_reports')
@@ -25,6 +26,9 @@ export class Report extends Model implements IReport {
 
     @ManyToOne(() => User, user => user.reports)
     user: User
+
+    @Column({type: 'boolean', default: false})
+    freeze: boolean
 
     @ManyToOne(() => Commission, commission => commission.reports)
     commission: Commission
