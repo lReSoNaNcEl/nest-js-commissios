@@ -9,6 +9,7 @@ import { CommissionsService } from "../../index/commissions.service";
 import { ModuleRef } from "@nestjs/core";
 import { User } from "../../../users/entities/User.entity";
 import { ReviewReportDto } from "./dto/review-report.dto";
+import { VerifyReportDto } from "./dto/verify-report.dto";
 
 @Injectable()
 export class ReportsService implements IReportsService, OnModuleInit {
@@ -49,7 +50,7 @@ export class ReportsService implements IReportsService, OnModuleInit {
         }))
     }
 
-    async sendReportToReview(dto: ReviewReportDto, reportId: number): Promise<any> {
+    async sendReportToReview(dto: ReviewReportDto, reportId: number): Promise<Report> {
         const report = await this.reportsRepository.getReport(reportId)
         return this.reportsRepository.save({
             id: report.id,
@@ -57,6 +58,13 @@ export class ReportsService implements IReportsService, OnModuleInit {
             freeze: true,
             ...dto
         })
+    }
+
+    async verifyReport(dto: VerifyReportDto, reportId: number): Promise<Report> {
+        const {status} = dto
+        const freeze = status !== ReportStatus.RETURNED
+        const report = await this.reportsRepository.getReport(reportId)
+        return this.reportsRepository.save({ id: report.id, freeze, status })
     }
 
 }

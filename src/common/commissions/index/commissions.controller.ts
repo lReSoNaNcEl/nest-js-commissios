@@ -33,7 +33,7 @@ export class CommissionsController implements ICommissionsController {
         return this.commissionsService.getCommissions(query, req.user)
     }
 
-    // @Auth(Roles.ADMIN)
+    @Auth(Roles.ADMIN)
     @Post()
     createCommission(@Body() dto: CreateCommissionDto) {
         return this.commissionsService.createCommission(dto)
