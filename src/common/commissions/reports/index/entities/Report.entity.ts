@@ -2,14 +2,16 @@ import { Model } from "../../../../../core/database/entities/model";
 import { IReport } from "../interfaces/report.interface";
 import { Commission } from "../../../index/entities/Commission.entity";
 import { User } from "../../../../users/entities/User.entity";
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from "typeorm";
 import { ReportDocument } from "../../documents/entities/ReportDocument.entity";
+import { Exclude } from "class-transformer";
 
 export enum ReportStatus {
     WORK = 'work',
     EXPIRED = 'expired',
     DONE = 'done',
-    RETURNED = 'returned'
+    RETURNED = 'returned',
+    CONFIRMED = 'confirmed'
 }
 
 @Entity('commissions_reports')
@@ -24,7 +26,7 @@ export class Report extends Model implements IReport {
     @Column({type: 'timestamp', nullable: true})
     confirmed: string
 
-    @ManyToOne(() => User, user => user.reports)
+    @ManyToOne(() => User, user => user.reports, {eager: true})
     user: User
 
     @Column({type: 'boolean', default: false})
@@ -41,5 +43,8 @@ export class Report extends Model implements IReport {
 
     @RelationId((report: Report) => report.commission)
     commissionId: number
+
+    @Exclude({toPlainOnly: true})
+    hasVerificationRights = (userId: number): boolean => this.userId === userId
 
 }

@@ -7,5 +7,5 @@ export interface IReportsService {
     getReport: (reportId: number) => Promise<Report>
     createManyReports: (user: User[], commissionId: number) => Promise<Report[]>
     createReport: (dto: CreateReportDto) => Promise<Report>
-    sendReportToReview: (dto: ReviewReportDto) => Promise<Report>
+    sendReportToReview: (dto: ReviewReportDto, reportId: number) => Promise<Report>
 }

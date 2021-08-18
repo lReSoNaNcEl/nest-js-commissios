@@ -11,4 +11,5 @@ export interface IReport {
     documents: ReportDocument[]
     confirmed: string
     freeze: boolean
+    hasVerificationRights(userId: number): boolean
 }

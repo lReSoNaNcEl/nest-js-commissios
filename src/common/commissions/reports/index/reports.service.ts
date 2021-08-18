@@ -3,7 +3,7 @@ import { ReportsRepository } from "./reports.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IReportsService } from "./interfaces/reports-service.interface";
 import { CreateReportDto } from "./dto/create-report.dto";
-import { Report } from "./entities/Report.entity";
+import { Report, ReportStatus } from "./entities/Report.entity";
 import { UsersService } from "../../../users/users.service";
 import { CommissionsService } from "../../index/commissions.service";
 import { ModuleRef } from "@nestjs/core";
@@ -22,8 +22,6 @@ export class ReportsService implements IReportsService, OnModuleInit {
         private moduleRef: ModuleRef
     ) {
     }
-
-    sendReportToReview: (dto: ReviewReportDto) => Promise<Report>
 
     //@@@ Импорт сервиса через хук нужен, чтобы не происходило циклических зависимостей - https://docs.nestjs.com/fundamentals/circular-dependency
     onModuleInit() {
@@ -49,6 +47,14 @@ export class ReportsService implements IReportsService, OnModuleInit {
             const dto = <CreateReportDto>{userId: id, commissionId}
             return this.createReport(dto)
         }))
+    }
+
+    async sendReportToReview(dto: ReviewReportDto, reportId: number): Promise<any> {
+        const report = await this.reportsRepository.getReport(reportId)
+        await this.reportsRepository.update(report.id, {
+            status: ReportStatus.DONE,
+            freeze: true
+        })
     }
 
 }

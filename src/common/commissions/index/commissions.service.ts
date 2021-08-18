@@ -1,9 +1,7 @@
 import { ICommissionsService } from "./interfaces/commissions-service.interface";
-import { forwardRef, Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CommissionsRepository } from "./commissions.repository";
 import { InjectRepository } from "@nestjs/typeorm";
-import { cache } from "../../../main";
-import { Cache } from "../../../core/cache";
 import { User } from "../../users/entities/User.entity";
 import { Roles } from "../../users/interfaces/user.interface";
 import { CreateCommissionDto } from "./dto/create-commission.dto";
@@ -17,6 +15,7 @@ import { SourcesService } from "../sources/sources.service";
 import { Category } from "../categories/enitities/Category.entity";
 import { Source } from "../sources/entities/Source.entity";
 import { UpdateCommissionDto } from "./dto/update-commission.dto";
+import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
 
 @Injectable()
 export class CommissionsService implements ICommissionsService {
@@ -36,18 +35,8 @@ export class CommissionsService implements ICommissionsService {
         return this.commissionsRepository.getCommission(commissionId)
     }
 
-    getCommissions(): Promise<Commission[]> {
-        const user: User = cache.get(Cache.CURRENT_USER)
-
-        switch (user.role) {
-            case Roles.ADMIN: {
-                return this.commissionsRepository.getCommissionsOfAdmin()
-            }
-            case Roles.IMPLEMENTOR: {
-                return this.commissionsRepository.getCommissionsOfImplementor(user.id)
-            }
-        }
-
+    getCommissions(query: PaginationCommissionsQueryDto, user: User): Promise<Commission[]> {
+        return this.commissionsRepository.getCommissions(query, user)
     }
 
     @Transactional()
@@ -69,15 +58,12 @@ export class CommissionsService implements ICommissionsService {
     }
 
     async updateCommission(dto: UpdateCommissionDto, commissionId: number): Promise<Commission> {
-
         const commission = await this.commissionsRepository.getCommission(commissionId)
-
         const {categoryId, sourceId} = dto
-
         const category: Category = await this.categoriesService.getCategory(categoryId)
         const source: Source = await this.sourcesService.getSource(sourceId)
 
-        await this.commissionsRepository.save({id: commissionId, ...dto})
+        await this.commissionsRepository.save({id: commission.id, ...dto, category, source})
         return this.commissionsRepository.getCommission(commissionId)
     }
 

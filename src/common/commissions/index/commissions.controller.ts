@@ -1,5 +1,5 @@
 import { ICommissionsController } from "./interfaces/commissions-controller.interface";
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Post, Put, Query, Req } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Commission } from "./entities/Commission.entity";
 import { CommissionsService } from "./commissions.service";
@@ -7,6 +7,8 @@ import { Auth } from "../../auth/auth.decorator"
 import {Roles} from "../../users/interfaces/user.interface";
 import { CreateCommissionDto } from './dto/create-commission.dto'
 import { UpdateCommissionDto } from "./dto/update-commission.dto";
+import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
+import { Request } from "express";
 
 @ApiTags('Commissions')
 @Controller('commissions')
@@ -24,8 +26,11 @@ export class CommissionsController implements ICommissionsController {
 
     @Auth()
     @Get()
-    getCommissions(): Promise<Commission[]> {
-        return this.commissionsService.getCommissions()
+    getCommissions(
+        @Query() query: PaginationCommissionsQueryDto,
+        @Req() req: Request
+    ): Promise<Commission[]> {
+        return this.commissionsService.getCommissions(query, req.user)
     }
 
     @Auth(Roles.ADMIN)
@@ -34,7 +39,7 @@ export class CommissionsController implements ICommissionsController {
         return this.commissionsService.createCommission(dto)
     }
 
-    // @Auth(Roles.ADMIN)
+    @Auth(Roles.ADMIN)
     @Put(':commissionId')
     updateCommission(
         @Body() dto: UpdateCommissionDto,
