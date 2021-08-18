@@ -51,9 +51,11 @@ export class ReportsService implements IReportsService, OnModuleInit {
 
     async sendReportToReview(dto: ReviewReportDto, reportId: number): Promise<any> {
         const report = await this.reportsRepository.getReport(reportId)
-        await this.reportsRepository.update(report.id, {
+        return this.reportsRepository.save({
+            id: report.id,
             status: ReportStatus.DONE,
-            freeze: true
+            freeze: true,
+            ...dto
         })
     }
 
