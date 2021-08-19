@@ -41,9 +41,10 @@ export class Report extends Model implements IReport {
     @RelationId((report: Report) => report.commission)
     commissionId: number
 
-    hasAccess = (userId: number): boolean => this.userId === userId
+    locked = (): boolean => [ReportStatus.DONE, ReportStatus.CONFIRMED].includes(this.status)
 
-    locked = (): boolean => [ReportStatus.DONE, ReportStatus.CONFIRMED].includes(this.status) && !!this.confirmed
+    @Exclude({toPlainOnly: true})
+    hasAccess = (userId: number): boolean => this.userId === userId
 
     @Exclude({toPlainOnly: true})
     canSendToVerification = (userId: number): boolean => this.userId === userId && !this.locked()

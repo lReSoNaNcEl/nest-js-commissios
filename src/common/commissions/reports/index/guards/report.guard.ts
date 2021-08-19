@@ -1,7 +1,8 @@
 import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
 import { getRepository, Repository } from "typeorm";
 import { Report } from "../entities/Report.entity";
-import { ReportDoesNotBelongUser } from "../filters/report-does-not-belong-user";
+import { ReportDoesNotBelongUserException } from "../filters/report-does-not-belong-user.exception";
+import { ReportIsLockedException } from "../filters/report-is-locked.exception";
 @Injectable()
 export class ReportGuard implements CanActivate {
 
@@ -16,7 +17,10 @@ export class ReportGuard implements CanActivate {
         const report: Report = await reportsRepository.findOne({where: {id: reportId}})
 
         if (!report.hasAccess(user.id))
-            throw new ReportDoesNotBelongUser()
+            throw new ReportDoesNotBelongUserException()
+
+        if (report.locked())
+            throw new ReportIsLockedException()
 
         return true
     }

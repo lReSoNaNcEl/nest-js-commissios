@@ -8,7 +8,6 @@ import { UsersService } from "../../../users/users.service";
 import { CommissionsService } from "../../index/commissions.service";
 import { ModuleRef } from "@nestjs/core";
 import { User } from "../../../users/entities/User.entity";
-import { ReviewReportDto } from "./dto/review-report.dto";
 import { VerifyReportDto } from "./dto/verify-report.dto";
 import { UpdateReportDto } from "./dto/update-report.dto";
 
@@ -51,12 +50,11 @@ export class ReportsService implements IReportsService, OnModuleInit {
         }))
     }
 
-    async sendReportToReview(dto: ReviewReportDto, reportId: number): Promise<Report> {
+    async sendReportToReview(reportId: number): Promise<Report> {
         const report = await this.reportsRepository.getReport(reportId)
         return this.reportsRepository.save({
             id: report.id,
             status: ReportStatus.DONE,
-            ...dto
         })
     }
 
@@ -73,7 +71,8 @@ export class ReportsService implements IReportsService, OnModuleInit {
     async updateReport(dto: UpdateReportDto, reportId: number): Promise<Report> {
         const {title} = dto
         const report = await this.reportsRepository.getReport(reportId)
-        return this.reportsRepository.save({id: report.id, title})
+        await this.reportsRepository.save({id: report.id, title})
+        return  this.reportsRepository.getReport(reportId)
     }
 
 }
