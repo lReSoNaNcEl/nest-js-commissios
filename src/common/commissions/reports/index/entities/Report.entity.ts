@@ -1,9 +1,9 @@
-import { Model } from "../../../../../core/database/entities/model";
-import { IReport } from "../interfaces/report.interface";
-import { Commission } from "../../../index/entities/Commission.entity";
-import { User } from "../../../../users/entities/User.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from "typeorm";
-import { ReportDocument } from "../../documents/entities/ReportDocument.entity";
+import { Model } from "../../../../../core/database/entities/model"
+import { IReport } from "../interfaces/report.interface"
+import { Commission } from "../../../index/entities/Commission.entity"
+import { User } from "../../../../users/entities/User.entity"
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from "typeorm"
+import { ReportDocument } from "../../documents/entities/ReportDocument.entity"
 import { Exclude } from "class-transformer";
 
 export enum ReportStatus {
@@ -29,9 +29,6 @@ export class Report extends Model implements IReport {
     @ManyToOne(() => User, user => user.reports, {eager: true})
     user: User
 
-    @Column({type: 'boolean', default: false})
-    freeze: boolean
-
     @ManyToOne(() => Commission, commission => commission.reports)
     commission: Commission
 
@@ -44,7 +41,11 @@ export class Report extends Model implements IReport {
     @RelationId((report: Report) => report.commission)
     commissionId: number
 
+    hasAccess = (userId: number): boolean => this.userId === userId
+
+    locked = (): boolean => [ReportStatus.DONE, ReportStatus.CONFIRMED].includes(this.status) && !!this.confirmed
+
     @Exclude({toPlainOnly: true})
-    hasVerificationRights = (userId: number): boolean => this.userId === userId
+    canSendToVerification = (userId: number): boolean => this.userId === userId && !this.locked()
 
 }

@@ -1,9 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext, UseGuards, Inject } from "@nestjs/common";
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
 import { getRepository, Repository } from "typeorm";
 import { Report } from "../entities/Report.entity";
-import { HasNotAccessSendReportToReviewException } from "../filters/has-not-access-send-report-to-review.exception";
+import { ReportDoesNotBelongUser } from "../filters/report-does-not-belong-user";
 @Injectable()
-export class ReportReviewGuard implements CanActivate {
+export class ReportGuard implements CanActivate {
 
     async canActivate(
         ctx: ExecutionContext,
@@ -15,8 +15,8 @@ export class ReportReviewGuard implements CanActivate {
         const reportsRepository: Repository<Report> = getRepository(Report)
         const report: Report = await reportsRepository.findOne({where: {id: reportId}})
 
-        if (!report.canSendToVerification(user.id))
-            throw new HasNotAccessSendReportToReviewException()
+        if (!report.hasAccess(user.id))
+            throw new ReportDoesNotBelongUser()
 
         return true
     }

@@ -3,6 +3,7 @@ import { CreateReportDto } from "../dto/create-report.dto";
 import { User } from "../../../../users/entities/User.entity";
 import { ReviewReportDto } from "../dto/review-report.dto";
 import { VerifyReportDto } from "../dto/verify-report.dto";
+import { UpdateReportDto } from "../dto/update-report.dto";
 
 export interface IReportsService {
     getReport: (reportId: number) => Promise<Report>
@@ -10,4 +11,5 @@ export interface IReportsService {
     createReport: (dto: CreateReportDto) => Promise<Report>
     sendReportToReview: (dto: ReviewReportDto, reportId: number) => Promise<Report>
     verifyReport: (dto: VerifyReportDto, reportId: number) => Promise<Report>
+    updateReport(dto: UpdateReportDto, reportId: number): Promise<Report>
 }

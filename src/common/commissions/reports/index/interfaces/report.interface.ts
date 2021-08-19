@@ -10,6 +10,6 @@ export interface IReport {
     commission: Commission
     documents: ReportDocument[]
     confirmed: string
-    freeze: boolean
-    hasVerificationRights(userId: number): boolean
+    canSendToVerification(userId: number): boolean
+    locked(): boolean
 }

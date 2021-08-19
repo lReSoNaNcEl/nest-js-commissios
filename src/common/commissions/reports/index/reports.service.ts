@@ -10,6 +10,7 @@ import { ModuleRef } from "@nestjs/core";
 import { User } from "../../../users/entities/User.entity";
 import { ReviewReportDto } from "./dto/review-report.dto";
 import { VerifyReportDto } from "./dto/verify-report.dto";
+import { UpdateReportDto } from "./dto/update-report.dto";
 
 @Injectable()
 export class ReportsService implements IReportsService, OnModuleInit {
@@ -55,16 +56,24 @@ export class ReportsService implements IReportsService, OnModuleInit {
         return this.reportsRepository.save({
             id: report.id,
             status: ReportStatus.DONE,
-            freeze: true,
             ...dto
         })
     }
 
     async verifyReport(dto: VerifyReportDto, reportId: number): Promise<Report> {
         const {status} = dto
-        const freeze = status !== ReportStatus.RETURNED
         const report = await this.reportsRepository.getReport(reportId)
-        return this.reportsRepository.save({ id: report.id, freeze, status })
+        return this.reportsRepository.save({
+            id: report.id,
+            status,
+            confirmed: status === ReportStatus.CONFIRMED ? new Date().toISOString() : null
+        })
+    }
+
+    async updateReport(dto: UpdateReportDto, reportId: number): Promise<Report> {
+        const {title} = dto
+        const report = await this.reportsRepository.getReport(reportId)
+        return this.reportsRepository.save({id: report.id, title})
     }
 
 }
