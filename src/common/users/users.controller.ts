@@ -4,10 +4,11 @@ import { Roles } from "./interfaces/user.interface";
 import { User } from "./entities/User.entity";
 import { UsersService } from "./users.service";
 import { ApiTags } from "@nestjs/swagger";
+import { IUsersController } from "./interfaces/users-controller.interface";
 
 @ApiTags('Users')
 @Controller('users')
-export class UsersController {
+export class UsersController implements IUsersController {
 
     constructor(
         private usersService: UsersService

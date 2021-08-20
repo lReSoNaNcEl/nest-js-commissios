@@ -7,6 +7,7 @@ import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-quer
 import { User } from "../../users/entities/User.entity";
 import { Roles } from "../../users/interfaces/user.interface";
 import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
+import any = jasmine.any;
 
 @EntityRepository(Commission)
 export class CommissionsRepository extends Repository<Commission> implements ICommissionsRepository {
@@ -52,14 +53,13 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
 
         qb.innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
-            .leftJoinAndSelect('report.documents', 'document')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'documents')
             .take(limit)
             .skip(page - 1)
 
-        return qb.getManyAndCount()
+        return <any>qb.getManyAndCount()
 
     }
 
