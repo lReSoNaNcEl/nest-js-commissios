@@ -33,7 +33,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         }
     }
 
-    getCommissionsOfAdmin(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto): Promise<Commission[]> {
+    getCommissionsOfAdmin(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto): Promise<[Commission[], number]> {
         const {page, limit} = paginationQuery
         let qb = this.createQueryBuilder('commission')
         qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
@@ -43,10 +43,10 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             .take(limit)
             .skip(page - 1)
 
-        return qb.getMany()
+        return qb.getManyAndCount()
     }
 
-    getCommissionsOfImplementor(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, userId: number): Promise<Commission[]> {
+    getCommissionsOfImplementor(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, userId: number): Promise<[Commission[], number]> {
         const {page, limit} = paginationQuery
         let qb = this.createQueryBuilder('commission')
         qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
@@ -59,7 +59,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             .take(limit)
             .skip(page - 1)
 
-        return qb.getMany()
+        return qb.getManyAndCount()
 
     }
 
