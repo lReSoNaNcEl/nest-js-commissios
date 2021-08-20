@@ -36,7 +36,7 @@ export class CommissionsService implements ICommissionsService {
         return this.commissionsRepository.getCommission(commissionId)
     }
 
-    getCommissions(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, user: User): Promise<Commission[]> {
+    getCommissions(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, user: User): Promise<[Commission[], number]> {
         return this.commissionsRepository.getCommissions(paginationQuery, searchQuery, user)
     }
 

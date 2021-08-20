@@ -7,7 +7,7 @@ import { SearchCommissionsQueryDto } from "../dto/search-commissions.query.dto";
 
 export interface ICommissionsService {
     getCommission(commissionId: number): Promise<Commission>
-    getCommissions: (paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, user: User) => Promise<Commission[]>
+    getCommissions: (paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, user: User) => Promise<[Commission[], number]>
     createCommission: (dto: CreateCommissionDto) => Promise<Commission>
     updateCommission(dto: UpdateCommissionDto, commissionId: number): Promise<Commission>
 }

@@ -31,7 +31,7 @@ export class CommissionsController implements ICommissionsController {
         @Query() paginationQuery: PaginationCommissionsQueryDto,
         @Query() searchQuery: SearchCommissionsQueryDto,
         @Req() req: Request
-    ): Promise<Commission[]> {
+    ): Promise<[Commission[], number]> {
         return this.commissionsService.getCommissions(paginationQuery, searchQuery, req.user)
     }
 
