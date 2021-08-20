@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { SourcesModule } from "../sources/sources.module";
 import { CommissionsController } from "./commissions.controller";
 import { CommissionsService } from "./commissions.service";
@@ -14,7 +14,7 @@ import { DocumentsModule } from "../documents/documents.module";
         TypeOrmModule.forFeature([CommissionsRepository, UsersRepository]),
         SourcesModule,
         CategoriesModule,
-        ReportsModule,
+        forwardRef(() => ReportsModule),
         DocumentsModule
     ],
     controllers: [CommissionsController],

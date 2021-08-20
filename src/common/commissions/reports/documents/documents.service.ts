@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { DocumentsRepository } from "./documents.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IDocumentsService } from "./interfaces/documents-service.interface";
@@ -6,6 +6,7 @@ import {FilesService} from "../../../files/files.service";
 import { CreateReportDocumentDto } from "./dto/create-report-document.dto";
 import { ReportsService } from "../index/reports.service";
 import { ReportDocument } from "./entities/ReportDocument.entity";
+import { DeleteResult } from "typeorm";
 
 @Injectable()
 export class DocumentsService implements IDocumentsService {
@@ -32,6 +33,16 @@ export class DocumentsService implements IDocumentsService {
             const document = this.documentsRepository.create(dto)
             return this.documentsRepository.save(document)
         }))
+    }
+
+    getDocument(documentId: number): Promise<ReportDocument> {
+        return this.documentsRepository.getDocument(documentId)
+    }
+
+    async deleteDocument(documentId: number): Promise<DeleteResult> {
+        const document = await this.getDocument(documentId)
+        await this.filesService.removeFile(document.path)
+        return this.documentsRepository.delete(documentId)
     }
 
 }

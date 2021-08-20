@@ -16,6 +16,7 @@ import { Category } from "../categories/enitities/Category.entity";
 import { Source } from "../sources/entities/Source.entity";
 import { UpdateCommissionDto } from "./dto/update-commission.dto";
 import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
+import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
 
 @Injectable()
 export class CommissionsService implements ICommissionsService {
@@ -35,8 +36,8 @@ export class CommissionsService implements ICommissionsService {
         return this.commissionsRepository.getCommission(commissionId)
     }
 
-    getCommissions(query: PaginationCommissionsQueryDto, user: User): Promise<Commission[]> {
-        return this.commissionsRepository.getCommissions(query, user)
+    getCommissions(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto, user: User): Promise<Commission[]> {
+        return this.commissionsRepository.getCommissions(paginationQuery, searchQuery, user)
     }
 
     @Transactional()

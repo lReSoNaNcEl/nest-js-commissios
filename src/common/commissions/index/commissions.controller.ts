@@ -9,6 +9,7 @@ import { CreateCommissionDto } from './dto/create-commission.dto'
 import { UpdateCommissionDto } from "./dto/update-commission.dto";
 import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
 import { Request } from "express";
+import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
 
 @ApiTags('Commissions')
 @Controller('commissions')
@@ -27,13 +28,14 @@ export class CommissionsController implements ICommissionsController {
     @Auth()
     @Get()
     getCommissions(
-        @Query() query: PaginationCommissionsQueryDto,
+        @Query() paginationQuery: PaginationCommissionsQueryDto,
+        @Query() searchQuery: SearchCommissionsQueryDto,
         @Req() req: Request
     ): Promise<Commission[]> {
-        return this.commissionsService.getCommissions(query, req.user)
+        return this.commissionsService.getCommissions(paginationQuery, searchQuery, req.user)
     }
 
-    @Auth(Roles.ADMIN)
+    // @Auth(Roles.ADMIN)
     @Post()
     createCommission(@Body() dto: CreateCommissionDto) {
         return this.commissionsService.createCommission(dto)

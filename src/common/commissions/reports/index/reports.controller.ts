@@ -1,8 +1,8 @@
-import { Body, Controller, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger"
 import { ReportsService } from "./reports.service"
 import { IReportsController } from "./interfaces/reports-controller.interface"
-import {ReportsReviewAccess} from "./guards/report-review-access.decorator"
+import {ReportReviewAccess} from "./guards/report-review-access.decorator"
 import { VerifyReportDto } from "./dto/verify-report.dto";
 import { UpdateReportDto } from "./dto/update-report.dto";
 import { ReportAccess } from "./guards/report-access.decorator";
@@ -18,7 +18,7 @@ export class ReportsController implements IReportsController {
         private reportsService: ReportsService
     ) {}
 
-    @ReportsReviewAccess()
+    @ReportReviewAccess()
     @Post(':reportId/review')
     sendReportToReview(@Param('reportId', ParseIntPipe) reportId: number) {
         return this.reportsService.sendReportToReview(reportId)
@@ -40,6 +40,12 @@ export class ReportsController implements IReportsController {
     @Put(':reportId')
     updateReport(@Body() dto: UpdateReportDto, @Param('reportId', ParseIntPipe) reportId: number) {
         return this.reportsService.updateReport(dto, reportId)
+    }
+
+    @Auth(Roles.ADMIN)
+    @Delete(':reportId')
+    deleteReport(@Param('reportId', ParseIntPipe) reportId: number): Promise<any> {
+        return this.reportsService.deleteReport(reportId)
     }
 
 }

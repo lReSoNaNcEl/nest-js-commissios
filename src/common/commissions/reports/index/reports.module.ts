@@ -12,6 +12,7 @@ import { CategoriesRepository } from "../../categories/categories.repository"
 import { SourcesRepository } from "../../sources/sources.repository"
 import { SourcesService } from "../../sources/sources.service"
 import {DocumentsModule} from "../documents/documents.module"
+import { FilesService } from "../../../files/files.service";
 
 @Module({
     imports: [
@@ -30,7 +31,8 @@ import {DocumentsModule} from "../documents/documents.module"
         UsersService,
         CommissionsService,
         CategoriesService,
-        SourcesService
+        SourcesService,
+        FilesService
     ],
     exports: [ReportsService],
 })

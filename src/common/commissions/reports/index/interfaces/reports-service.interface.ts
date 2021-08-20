@@ -11,4 +11,5 @@ export interface IReportsService {
     sendReportToReview: (reportId: number) => Promise<Report>
     verifyReport: (dto: VerifyReportDto, reportId: number) => Promise<Report>
     updateReport(dto: UpdateReportDto, reportId: number): Promise<Report>
+    deleteReport: (reportId: number) => Promise<any>
 }

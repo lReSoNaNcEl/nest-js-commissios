@@ -8,4 +8,5 @@ export interface IReportsController {
     verifyReport: (dto: VerifyReportDto, reportId: number) => Promise<Report>
     createReport: (dto: CreateReportDto) => Promise<Report>
     updateReport: (dto: UpdateReportDto, reportId: number) => Promise<Report>
+    deleteReport: (reportId: number) => Promise<any>
 }

@@ -32,7 +32,7 @@ export class Report extends Model implements IReport {
     @ManyToOne(() => Commission, commission => commission.reports)
     commission: Commission
 
-    @OneToMany(() => ReportDocument, document => document.report)
+    @OneToMany(() => ReportDocument, document => document.report, {eager: true, cascade: true})
     documents: ReportDocument[]
 
     @RelationId((report: Report) => report.user)

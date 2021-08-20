@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
+import { Controller, Delete, Param, ParseIntPipe, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import {multerOptions} from "../../../files/filters/documents-files.filter"
@@ -23,6 +23,12 @@ export class DocumentsController implements IDocumentsController {
         @Param('reportId', ParseIntPipe) reportId: number
     ): Promise<ReportDocument[]> {
         return this.documentsService.uploadDocumentsOfReport(files, reportId)
+    }
+
+    @Auth()
+    @Delete(':documentId')
+    async deleteDocument(@Param('documentId', ParseIntPipe) documentId: number) {
+        return this.documentsService.deleteDocument(documentId)
     }
 
 }

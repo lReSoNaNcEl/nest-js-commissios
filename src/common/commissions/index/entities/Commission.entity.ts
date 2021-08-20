@@ -1,7 +1,7 @@
-import { Model } from "../../../../core/database/entities/model"
+import { Model } from "../../../../core/database/entities/model";
 import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, RelationId } from "typeorm";
 import { CommissionImportance, CommissionLevel, CommissionRate, ICommission } from "../interfaces/commission.interface";
-import { Category } from "../../categories/enitities/Category.entity"
+import { Category } from "../../categories/enitities/Category.entity";
 import { Source } from "../../sources/entities/Source.entity";
 import { Report } from "../../reports/index/entities/Report.entity";
 import { Transform } from "class-transformer";

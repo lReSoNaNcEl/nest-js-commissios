@@ -1,7 +1,7 @@
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { IFilesService } from "./interfaces/files-service.interface";
 import { IFile } from "./interfaces/file.interface";
-import { ensureDir, writeFile } from "fs-extra";
+import { ensureDir, writeFile, remove } from "fs-extra";
 import { StaticDir, StaticFolder } from "../../core/config";
 import { v4 as uuid } from "uuid";
 import { REQUEST } from "@nestjs/core";
@@ -39,6 +39,10 @@ export class FilesService implements IFilesService {
 
     uploadFiles(files: Express.Multer.File[]): Promise<IFile[]> {
         return Promise.all(files.map((file: Express.Multer.File) => this.uploadFile(file)))
+    }
+
+    async removeFile(path: string): Promise<void> {
+        await remove(`${StaticDir.FOLDER}/${path}`)
     }
 
 }

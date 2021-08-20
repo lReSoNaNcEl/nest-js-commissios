@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { ReportsRepository } from "./reports.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IReportsService } from "./interfaces/reports-service.interface";
@@ -10,23 +10,20 @@ import { ModuleRef } from "@nestjs/core";
 import { User } from "../../../users/entities/User.entity";
 import { VerifyReportDto } from "./dto/verify-report.dto";
 import { UpdateReportDto } from "./dto/update-report.dto";
+import { FilesService } from "../../../files/files.service";
 
 @Injectable()
-export class ReportsService implements IReportsService, OnModuleInit {
-
-    private commissionsService: CommissionsService;
+export class ReportsService implements IReportsService {
 
     constructor(
         @InjectRepository(ReportsRepository)
         private reportsRepository: ReportsRepository,
         private usersService: UsersService,
-        private moduleRef: ModuleRef
+        private moduleRef: ModuleRef,
+        private filesService: FilesService,
+        @Inject(forwardRef(() => CommissionsService))
+        private commissionsService: CommissionsService
     ) {
-    }
-
-    //@@@ Импорт сервиса через хук нужен, чтобы не происходило циклических зависимостей - https://docs.nestjs.com/fundamentals/circular-dependency
-    onModuleInit() {
-        this.commissionsService = this.moduleRef.get<CommissionsService>(CommissionsService)
     }
 
     async getReport(reportId: number): Promise<Report> {
@@ -35,7 +32,6 @@ export class ReportsService implements IReportsService, OnModuleInit {
 
     async createReport(dto: CreateReportDto): Promise<Report> {
         const {userId, commissionId} = dto
-
         const commission = await this.commissionsService.getCommission(commissionId)
         const user = await this.usersService.getUser(userId)
         const report = this.reportsRepository.create({user, commission})
@@ -73,6 +69,12 @@ export class ReportsService implements IReportsService, OnModuleInit {
         const report = await this.reportsRepository.getReport(reportId)
         await this.reportsRepository.save({id: report.id, title})
         return  this.reportsRepository.getReport(reportId)
+    }
+
+    async deleteReport(reportId: number): Promise<any> {
+        const report = await this.reportsRepository.getReport(reportId)
+        report.documents.map(document => this.filesService.removeFile(document.path))
+        return  this.reportsRepository.delete(report.id)
     }
 
 }
