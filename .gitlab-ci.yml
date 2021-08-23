@@ -1,0 +1,13 @@
+stages:
+  - deploy
+
+deploy:
+ stage: deploy
+ only:
+    - master
+ tags:
+    - srv23203
+ script:
+    - rsync -r ./ /home/stack/projects/ick-nest
+    # - npm --prefix /home/stack/projects/ick-nest i
+    - docker-compose -f /home/stack/projects/ick-nest/docker-compose.yml build && docker-compose -f /home/stack/projects/ick-nest/docker-compose.yml up -d
