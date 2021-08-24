@@ -31,9 +31,6 @@ export class Commission extends Model implements ICommission {
     @Column()
     positionNumber: string
 
-    @Column({nullable: true})
-    sourceNumber: string
-
     @Column({type: 'timestamp'})
     release: string
 

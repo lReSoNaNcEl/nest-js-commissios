@@ -31,7 +31,6 @@ export interface ICommission {
     registrationCardDate: string
     registrationCardNumber: string
     positionNumber: string
-    sourceNumber: string
     categoryId: number
     sourceId: number
 }
