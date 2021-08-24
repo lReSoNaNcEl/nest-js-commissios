@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+  nest_ick:
+    container_name: nest_ick
+    build:
+      context: .
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+    restart: always
+    networks:
+        - ndb_net
+
+networks:
+  ndb_net:
+    external:
+      name: ndb_net
