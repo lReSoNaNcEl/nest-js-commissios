@@ -4,7 +4,7 @@ import { CategoriesService } from "./categories.service";
 import { ApiTags } from "@nestjs/swagger";
 
 @ApiTags('Categories Of Commission')
-@Controller('commissions/categories')
+@Controller('categories')
 export class CategoriesController implements ICategoriesController {
 
     constructor(
