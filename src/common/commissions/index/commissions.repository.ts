@@ -29,6 +29,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         commission = await this.createQueryBuilder('commission')
             .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
             .leftJoinAndSelect('report.documents', 'reportDocuments')
+            .leftJoinAndSelect('report.user', 'user')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'commissionDocuments')
