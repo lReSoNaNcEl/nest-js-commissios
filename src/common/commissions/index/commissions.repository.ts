@@ -1,23 +1,43 @@
 import { ICommissionsRepository } from "./interfaces/commissions-repository.interface";
 import { Brackets, EntityRepository, Repository, SelectQueryBuilder } from "typeorm";
 import { Commission } from "./entities/Commission.entity";
-import { NotFoundException } from "@nestjs/common";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { Report } from "../reports/index/entities/Report.entity";
 import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
 import { User } from "../../users/entities/User.entity";
 import { Roles } from "../../users/interfaces/user.interface";
 import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
-import any = jasmine.any;
+import { cache } from "../../../main";
+import { Cache } from "../../../core/cache";
 
 @EntityRepository(Commission)
 export class CommissionsRepository extends Repository<Commission> implements ICommissionsRepository {
 
     getCommission(commissionId: number): Promise<Commission> {
+        const user: User = cache.get(Cache.CURRENT_USER)
+
+        switch (user.role) {
+            case Roles.ADMIN: {return this.getCommissionOfAdmin(commissionId)}
+            case Roles.IMPLEMENTOR: {return this.getCommissionOfImplementor(commissionId, user.id)}
+        }
+    }
+
+    async getCommissionOfImplementor(commissionId: number, userId: number) {
+        let commission = await this.findOne({ where: {id: commissionId}})
+        if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
+
+        commission = await this.createQueryBuilder('commission')
+            .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .getOne()
+
+        if (!commission) throw new ForbiddenException(`You are not the implementor of the commission ${commissionId}!`)
+
+        return commission
+    }
+
+    async getCommissionOfAdmin(commissionId: number) {
         const commission = this.findOne({
-            where: {
-                id: commissionId
-            },
-            relations: ['reports', 'reports.documents', 'category', 'source', 'documents']
+            where: {id: commissionId},
         })
         if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
         return commission

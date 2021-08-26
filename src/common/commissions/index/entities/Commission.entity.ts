@@ -45,7 +45,7 @@ export class Commission extends Model implements ICommission {
         return null
     })
     @JoinTable()
-    @ManyToOne(() => Category, category => category.commissions)
+    @ManyToOne(() => Category, category => category.commissions, {eager: true})
     category: Category
 
     @Transform(({value}) => {
@@ -53,13 +53,13 @@ export class Commission extends Model implements ICommission {
         return null
     })
     @JoinColumn()
-    @ManyToOne(() => Source, source => source.commissions)
+    @ManyToOne(() => Source, source => source.commissions, {eager: true})
     source: Source
 
-    @OneToMany(() => Report, report => report.commission)
+    @OneToMany(() => Report, report => report.commission, {eager: true})
     reports: Report[]
 
-    @OneToMany(() => CommissionDocument, document => document.commission)
+    @OneToMany(() => CommissionDocument, document => document.commission, {eager: true})
     documents: CommissionDocument[]
 
     @RelationId((commission: Commission) => commission.category)
