@@ -23,21 +23,24 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     }
 
     async getCommissionOfImplementor(commissionId: number, userId: number) {
-        let commission = await this.findOne({ where: {id: commissionId}})
-        if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
-
-        commission = await this.createQueryBuilder('commission')
-            .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
-            .leftJoinAndSelect('report.documents', 'reportDocuments')
-            .leftJoinAndSelect('report.user', 'user')
-            .leftJoinAndSelect('commission.category', 'category')
-            .leftJoinAndSelect('commission.source', 'source')
-            .leftJoinAndSelect('commission.documents', 'commissionDocuments')
-            .getOne()
-
-        if (!commission) throw new ForbiddenException(`You are not the implementor of the commission ${commissionId}!`)
-
-        return commission
+        return this.findOne({
+            where: {id: commissionId},
+        })
+        // let commission = await this.findOne({ where: {id: commissionId}})
+        // if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
+        //
+        // commission = await this.createQueryBuilder('commission')
+        //     .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+        //     .leftJoinAndSelect('report.documents', 'reportDocuments')
+        //     .leftJoinAndSelect('report.user', 'user')
+        //     .leftJoinAndSelect('commission.category', 'category')
+        //     .leftJoinAndSelect('commission.source', 'source')
+        //     .leftJoinAndSelect('commission.documents', 'commissionDocuments')
+        //     .getOne()
+        //
+        // if (!commission) throw new ForbiddenException(`You are not the implementor of the commission ${commissionId}!`)
+        //
+        // return commission
     }
 
     async getCommissionOfAdmin(commissionId: number) {
