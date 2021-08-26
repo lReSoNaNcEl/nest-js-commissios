@@ -28,9 +28,10 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
 
         commission = await this.createQueryBuilder('commission')
             .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .leftJoinAndSelect('report.documents', 'reportDocuments')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
-            .leftJoinAndSelect('commission.documents', 'documents')
+            .leftJoinAndSelect('commission.documents', 'commissionDocuments')
             .getOne()
 
         if (!commission) throw new ForbiddenException(`You are not the implementor of the commission ${commissionId}!`)
