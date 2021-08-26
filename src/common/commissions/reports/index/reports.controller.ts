@@ -18,7 +18,7 @@ export class ReportsController implements IReportsController {
         private reportsService: ReportsService
     ) {}
 
-    @Get()
+    @Get('test')
     getReports() {
         return this.reportsService.getReports()
     }
