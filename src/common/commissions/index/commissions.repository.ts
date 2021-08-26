@@ -66,6 +66,8 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
 
         qb.leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
+            .leftJoinAndSelect('commission.reports', 'report')
+            .leftJoinAndSelect('report.user', 'user')
             .take(limit)
             .skip(page - 1)
 
