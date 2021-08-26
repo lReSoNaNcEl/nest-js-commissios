@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, OnModuleInit } from "@nestjs/common";
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { ReportsRepository } from "./reports.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IReportsService } from "./interfaces/reports-service.interface";
@@ -11,6 +11,7 @@ import { User } from "../../../users/entities/User.entity";
 import { VerifyReportDto } from "./dto/verify-report.dto";
 import { UpdateReportDto } from "./dto/update-report.dto";
 import { FilesService } from "../../../files/files.service";
+import {Roles} from "../../../users/interfaces/user.interface";
 
 @Injectable()
 export class ReportsService implements IReportsService {
@@ -34,6 +35,10 @@ export class ReportsService implements IReportsService {
         const {userId, commissionId} = dto
         const commission = await this.commissionsService.getCommission(commissionId)
         const user = await this.usersService.getUser(userId)
+
+        if (user.role === Roles.ADMIN)
+            throw new HttpException('You can\'t assign a report to an administrator', HttpStatus.BAD_REQUEST)
+
         const report = this.reportsRepository.create({user, commission})
 
         return this.reportsRepository.save(report)
