@@ -30,6 +30,10 @@ export class ReportsService implements IReportsService {
         return this.reportsRepository.getReport(reportId)
     }
 
+    async getReports(): Promise<Report[]> {
+        return this.reportsRepository.find()
+    }
+
     async createReport(dto: CreateReportDto): Promise<Report> {
         const {userId, commissionId} = dto
         const commission = await this.commissionsService.getCommission(commissionId)

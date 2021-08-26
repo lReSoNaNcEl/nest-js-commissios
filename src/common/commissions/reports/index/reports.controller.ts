@@ -18,6 +18,12 @@ export class ReportsController implements IReportsController {
         private reportsService: ReportsService
     ) {}
 
+    @Get()
+    getReports() {
+        return this.reportsService.getReports()
+    }
+
+    @Auth()
     @Get(':reportId')
     getReport(@Param('reportId', ParseIntPipe) reportId: number) {
         return this.reportsService.getReport(reportId)
