@@ -69,7 +69,6 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             .leftJoinAndSelect('commission.documents', 'documents')
             .take(limit)
             .skip(page - 1)
-            .orderBy('id')
 
         return qb.getManyAndCount()
     }
