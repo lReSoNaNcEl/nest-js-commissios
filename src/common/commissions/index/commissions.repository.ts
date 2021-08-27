@@ -27,7 +27,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         if (!commission) throw new NotFoundException(`Commission with ID ${commissionId} not found!`)
 
         commission = await this.createQueryBuilder('commission')
-            .innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .innerJoinAndMapMany('commission.reports', Report, 'report', `report.commission.id = :commissionId and report.user.id = :userId`, {userId, commissionId})
             .leftJoinAndSelect('report.documents', 'reportDocuments')
             .leftJoinAndSelect('report.user', 'user')
             .leftJoinAndSelect('commission.category', 'category')
