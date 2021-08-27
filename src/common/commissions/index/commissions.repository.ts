@@ -3,7 +3,7 @@ import { Brackets, EntityRepository, Repository, SelectQueryBuilder } from "type
 import { Commission } from "./entities/Commission.entity";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { Report } from "../reports/index/entities/Report.entity";
-import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
+import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto"
 import { User } from "../../users/entities/User.entity";
 import { Roles } from "../../users/interfaces/user.interface";
 import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
