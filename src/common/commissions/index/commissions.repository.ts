@@ -33,6 +33,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'commissionDocuments')
+            .where('commission.id = :commissionId', {commissionId})
             .getOne()
 
         if (!commission) throw new ForbiddenException(`You are not the implementor of the commission ${commissionId}!`)
