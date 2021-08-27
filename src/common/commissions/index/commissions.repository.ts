@@ -84,7 +84,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'documents')
             .take(limit)
-            .skip(page - 1)
+            .skip((page - 1) * limit)
 
         return <any>qb.getManyAndCount()
 
