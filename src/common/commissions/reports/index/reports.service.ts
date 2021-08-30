@@ -36,6 +36,9 @@ export class ReportsService implements IReportsService {
         const commission = await this.commissionsService.getCommission(commissionId)
         const user = await this.usersService.getUser(userId)
 
+        if (commission.reports.some(r => r.userId === userId))
+            throw new HttpException(`You can\`t re-create a report for a user inside an commission ${commissionId}`, HttpStatus.CONFLICT)
+
         if (user.role === Roles.ADMIN)
             throw new HttpException('You can\'t assign a report to an administrator', HttpStatus.BAD_REQUEST)
 

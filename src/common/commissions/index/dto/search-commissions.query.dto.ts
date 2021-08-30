@@ -3,6 +3,7 @@ import { IsEnum, IsNumber, IsOptional, IsPositive, IsString } from "class-valida
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 import * as faker from "faker";
+import { ReportStatus } from "../../reports/index/entities/Report.entity";
 
 export class SearchCommissionsQueryDto {
 
@@ -29,8 +30,11 @@ export class SearchCommissionsQueryDto {
     @ApiProperty({enum: CommissionRate, required: false})
     @IsEnum(CommissionRate)
     @IsOptional()
-    @IsOptional()
     rate: CommissionRate
+
+    @IsEnum(ReportStatus)
+    @IsOptional()
+    status: ReportStatus
 
     @ApiProperty({example: faker.datatype.number(30), required: false})
     @Type(() => Number)
