@@ -63,14 +63,17 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     getCommissionsOfAdmin(paginationQuery: PaginationCommissionsQueryDto, searchQuery: SearchCommissionsQueryDto): Promise<[Commission[], number]> {
         const {page, limit} = paginationQuery
         let qb = this.createQueryBuilder('commission')
-        qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
 
-        qb.leftJoinAndSelect('commission.category', 'category')
+        qb.innerJoinAndMapMany('commission.reports', Report, 'report', 'commission.id = report.commission.id')
+            .leftJoinAndSelect('report.user', 'user')
+            .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'documents')
             .addOrderBy('commission.id', 'ASC')
             .take(limit)
             .skip((page - 1) * limit)
+
+        qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
 
         return qb.getManyAndCount()
     }
@@ -92,7 +95,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     }
 
     setSearchCommissionsToQueryBuilder(qb: SelectQueryBuilder<Commission>, searchQuery: SearchCommissionsQueryDto): SelectQueryBuilder<Commission> {
-        const {title, text, level, categoryId, sourceId, importance, rate} = searchQuery
+        const {title, text, level, categoryId, sourceId, importance, rate, status} = searchQuery
 
         qb.where(new Brackets((qb) => {
             if (title) qb.where(`commission.title ilike :title`, {title: `%${title}%`})
@@ -102,6 +105,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             if (importance) qb.andWhere(`commission.importance = :importance`, {importance})
             if (categoryId) qb.andWhere(`commission.categoryId = :categoryId`, {categoryId})
             if (sourceId) qb.andWhere(`commission.sourceId = :sourceId`, {sourceId})
+            if (status) qb.andWhere('report.status = :status', {status})
         }))
 
         return qb

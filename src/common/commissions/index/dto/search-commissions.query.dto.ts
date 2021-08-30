@@ -32,6 +32,7 @@ export class SearchCommissionsQueryDto {
     @IsOptional()
     rate: CommissionRate
 
+    @ApiProperty({enum: ReportStatus, required: false})
     @IsEnum(ReportStatus)
     @IsOptional()
     status: ReportStatus
