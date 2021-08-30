@@ -95,7 +95,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     }
 
     setSearchCommissionsToQueryBuilder(qb: SelectQueryBuilder<Commission>, searchQuery: SearchCommissionsQueryDto): SelectQueryBuilder<Commission> {
-        const {title, text, level, categoryId, sourceId, importance, rate, status} = searchQuery
+        const {title, text, level, categoryId, sourceId, importance, rate, status, implementorId} = searchQuery
 
         qb.where(new Brackets((qb) => {
             if (title) qb.where(`commission.title ilike :title`, {title: `%${title}%`})
@@ -106,6 +106,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             if (categoryId) qb.andWhere(`commission.categoryId = :categoryId`, {categoryId})
             if (sourceId) qb.andWhere(`commission.sourceId = :sourceId`, {sourceId})
             if (status) qb.andWhere('report.status = :status', {status})
+            if (implementorId) qb.andWhere('report.userId = :userId', {userId: implementorId})
         }))
 
         return qb

@@ -37,6 +37,13 @@ export class SearchCommissionsQueryDto {
     @IsOptional()
     status: ReportStatus
 
+    @ApiProperty()
+    @Type(() => Number)
+    @IsNumber()
+    @IsPositive()
+    @IsOptional()
+    implementorId: number
+
     @ApiProperty({example: faker.datatype.number(30), required: false})
     @Type(() => Number)
     @IsNumber()
