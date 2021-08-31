@@ -7,8 +7,9 @@ import { NotFoundException } from "@nestjs/common";
 export class CategoriesRepository extends Repository<Category> implements ICategoriesRepository {
 
     async getCategory(categoryId: number): Promise<Category> {
-        const category = this.findOne({where: {id: categoryId}})
-        if (!category) throw new NotFoundException(`Category with ID ${categoryId} don\`t exists in database` )
+        const category = await this.findOne({where: {id: categoryId}})
+        if (!category)
+            throw new NotFoundException(`Category with ID ${categoryId} don\`t exists in database` )
         return category
     }
 

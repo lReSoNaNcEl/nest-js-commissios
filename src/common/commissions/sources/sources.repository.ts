@@ -7,7 +7,7 @@ import { NotFoundException } from "@nestjs/common";
 export class SourcesRepository extends Repository<Source> implements ISourcesRepository {
 
     async getSource(sourceId: number): Promise<Source> {
-        const source = this.findOne({where: {id: sourceId}})
+        const source = await this.findOne({where: {id: sourceId}})
         if (!source) throw new NotFoundException(`Source with ID ${sourceId} don\`t exists in database` )
         return source
     }

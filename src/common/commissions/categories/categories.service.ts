@@ -23,7 +23,6 @@ export class CategoriesService implements ICategoriesService {
     }
 
     async createCategory(dto: CreateCategoryDto): Promise<Category> {
-
         const category = await this.categoriesRepository.findOne({...dto})
 
         if (category)
