@@ -45,7 +45,11 @@ export class Commission extends Model implements ICommission {
         return null
     })
     @JoinTable()
-    @ManyToOne(() => Category, category => category.commissions, {eager: true})
+    @ManyToOne(() => Category, category => category.commissions, {
+        eager: true,
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+    })
     category: Category
 
     @Transform(({value}) => {
@@ -53,7 +57,11 @@ export class Commission extends Model implements ICommission {
         return null
     })
     @JoinColumn()
-    @ManyToOne(() => Source, source => source.commissions, {eager: true})
+    @ManyToOne(() => Source, source => source.commissions, {
+        eager: true,
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+    })
     source: Source
 
     @OneToMany(() => Report, report => report.commission, {eager: true})
