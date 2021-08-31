@@ -1,9 +1,8 @@
 import { ICommissionsService } from "./interfaces/commissions-service.interface";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Scope } from "@nestjs/common";
 import { CommissionsRepository } from "./commissions.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../../users/entities/User.entity";
-import { Roles } from "../../users/interfaces/user.interface";
 import { CreateCommissionDto } from "./dto/create-commission.dto";
 import { UsersRepository } from "../../users/users.repository";
 import { Commission } from "./entities/Commission.entity";
@@ -17,6 +16,8 @@ import { Source } from "../sources/entities/Source.entity";
 import { UpdateCommissionDto } from "./dto/update-commission.dto";
 import { PaginationCommissionsQueryDto } from "./dto/pagination-commissions-query.dto";
 import { SearchCommissionsQueryDto } from "./dto/search-commissions.query.dto";
+import { Cron, CronExpression, SchedulerRegistry } from "@nestjs/schedule";
+import { LessThan } from "typeorm";
 
 @Injectable()
 export class CommissionsService implements ICommissionsService {
@@ -29,6 +30,7 @@ export class CommissionsService implements ICommissionsService {
         private categoriesService: CategoriesService,
         private sourcesService: SourcesService,
         private reportsService: ReportsService,
+        private schedulerRegistry: SchedulerRegistry
 
     ) {}
 
@@ -46,10 +48,12 @@ export class CommissionsService implements ICommissionsService {
         const users = await this.usersRepository.getImplementorsByIds(implementors)
 
         if (!users.length) throw new UsersLengthIsNullException()
-        const category: Category = await this.categoriesService.getCategory(categoryId)
-        const source: Source = await this.sourcesService.getSource(sourceId)
 
-        let commission = this.commissionsRepository.create({...dto, category, source})
+        let commission = this.commissionsRepository.create({...dto})
+
+        if (categoryId) commission.category = await this.categoriesService.getCategory(categoryId)
+        if (sourceId) commission.source = await this.sourcesService.getSource(sourceId)
+
         commission = await this.commissionsRepository.save(commission)
         commission.reports = await this.reportsService.createManyReports(users, commission.id)
 

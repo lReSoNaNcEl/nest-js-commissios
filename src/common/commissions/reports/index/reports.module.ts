@@ -13,6 +13,7 @@ import { SourcesRepository } from "../../sources/sources.repository"
 import { SourcesService } from "../../sources/sources.service"
 import {DocumentsModule} from "../documents/documents.module"
 import { FilesService } from "../../../files/files.service";
+import { SchedulerRegistry } from "@nestjs/schedule";
 
 @Module({
     imports: [
@@ -32,7 +33,7 @@ import { FilesService } from "../../../files/files.service";
         CommissionsService,
         CategoriesService,
         SourcesService,
-        FilesService
+        FilesService,
     ],
     exports: [ReportsService],
 })

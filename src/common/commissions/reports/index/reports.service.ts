@@ -33,6 +33,7 @@ export class ReportsService implements IReportsService {
 
     async createReport(dto: CreateReportDto): Promise<Report> {
         const {userId, commissionId} = dto
+        console.log(this.commissionsService, 'c')
         const commission = await this.commissionsService.getCommission(commissionId)
         const user = await this.usersService.getUser(userId)
 

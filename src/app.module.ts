@@ -13,9 +13,11 @@ import { CommissionsModule } from "./common/commissions/index/commissions.module
 import { ServeStaticModule } from "@nestjs/serve-static"
 import { CreateCategoriesSeed } from "./core/database/seeds/create-categories.seed";
 import { StaticConfig } from "./core/config/static.config";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
     imports: [
+        ScheduleModule.forRoot(),
         ConfigModule.forRoot({
             isGlobal: true,
             load: [ApplicationConfig]
