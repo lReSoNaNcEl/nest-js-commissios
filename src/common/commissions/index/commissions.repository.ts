@@ -95,7 +95,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
     }
 
     setSearchCommissionsToQueryBuilder(qb: SelectQueryBuilder<Commission>, searchQuery: SearchCommissionsQueryDto): SelectQueryBuilder<Commission> {
-        const {title, text, level, categoryId, sourceId, importance, rate, status, implementorId} = searchQuery
+        const {title, text, level, categoryId, sourceId, importance, rate, status, implementorId, expirationInitial, expirationFinal, releaseInitial, releaseFinal} = searchQuery
 
         qb.where(new Brackets((qb) => {
             if (title) qb.where(`commission.title ilike :title`, {title: `%${title}%`})
@@ -107,6 +107,20 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
             if (sourceId) qb.andWhere(`commission.sourceId = :sourceId`, {sourceId})
             if (status) qb.andWhere('report.status = :status', {status})
             if (implementorId) qb.andWhere('report.userId = :userId', {userId: implementorId})
+
+            if (expirationInitial && expirationFinal)
+                qb.andWhere('commission.expiration >= :expirationInitial and commission.expiration <= :expirationFinal', {expirationInitial, expirationFinal})
+            else if (expirationInitial && !expirationFinal)
+                qb.andWhere('commission.expiration = :expiration', {expiration: expirationInitial})
+            else if (!expirationInitial && expirationFinal)
+                qb.andWhere('commission.expiration <= :expiration', {expiration: expirationFinal})
+
+            if (releaseInitial && releaseFinal)
+                qb.andWhere('commission.release >= :releaseInitial and commission.release <= :releaseFinal', {releaseInitial, releaseFinal})
+            else if (releaseInitial && !releaseFinal)
+                qb.andWhere('commission.release = :release', {release: releaseInitial})
+            else if (!releaseInitial && releaseFinal)
+                qb.andWhere('commission.release <= :release', {release: releaseFinal})
         }))
 
         return qb

@@ -1,5 +1,5 @@
 import { CommissionImportance, CommissionLevel, CommissionRate } from "../interfaces/commission.interface";
-import { IsEnum, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 import { Type } from "class-transformer";
 import { ApiProperty } from "@nestjs/swagger";
 import * as faker from "faker";
@@ -57,6 +57,30 @@ export class SearchCommissionsQueryDto {
     @IsPositive()
     @IsOptional()
     sourceId: number
+
+    @ApiProperty({example: faker.date.recent(), required: false})
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    expirationInitial: string
+
+    @ApiProperty({example: faker.date.future(), required: false})
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    expirationFinal: string
+
+    @ApiProperty({example: faker.date.recent(), required: false})
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    releaseInitial: string
+
+    @ApiProperty({example: faker.date.future(), required: false})
+    @IsDate()
+    @Type(() => Date)
+    @IsOptional()
+    releaseFinal: string
 
 }
 
