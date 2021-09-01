@@ -23,15 +23,5 @@ export class AuthController implements IAuthController {
         return this.authService.login(dto)
     }
 
-    // @Post('test')
-    // @UseInterceptors(FileFieldsInterceptor(
-    //     [
-    //         { name: 'documents', maxCount: 1 }
-    //     ],
-    //     multerOptions
-    // ))
-    // test(@UploadedFiles() documents: Express.Multer.File) {
-    //     console.log(documents, 'file')
-    // }
 }
 
