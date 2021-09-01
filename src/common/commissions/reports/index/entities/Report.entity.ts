@@ -5,6 +5,7 @@ import { User } from "../../../../users/entities/User.entity"
 import { Column, Entity, ManyToOne, OneToMany, RelationId } from "typeorm"
 import { ReportDocument } from "../../documents/entities/ReportDocument.entity"
 import { Exclude } from "class-transformer";
+import { ReportComment } from "../../comments/entities/ReportComment.entity";
 
 export enum ReportStatus {
     WORK = 'work',
@@ -34,6 +35,9 @@ export class Report extends Model implements IReport {
 
     @OneToMany(() => ReportDocument, document => document.report, {eager: true, cascade: true})
     documents: ReportDocument[]
+
+    @OneToMany(() => ReportComment, comment => comment.report, {eager: true, cascade: true})
+    comments: ReportComment[]
 
     @RelationId((report: Report) => report.user)
     userId: number

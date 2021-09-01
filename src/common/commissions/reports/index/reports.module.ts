@@ -13,7 +13,7 @@ import { SourcesRepository } from "../../sources/sources.repository"
 import { SourcesService } from "../../sources/sources.service"
 import {DocumentsModule} from "../documents/documents.module"
 import { FilesService } from "../../../files/files.service";
-import { SchedulerRegistry } from "@nestjs/schedule";
+import { ReportsCommentsModule } from "../comments/reports-comments.module";
 
 @Module({
     imports: [
@@ -24,6 +24,7 @@ import { SchedulerRegistry } from "@nestjs/schedule";
             CategoriesRepository,
             SourcesRepository,
         ]),
+        ReportsCommentsModule,
         DocumentsModule
     ],
     controllers: [ReportsController],

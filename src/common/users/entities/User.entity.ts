@@ -4,6 +4,7 @@ import {Exclude} from 'class-transformer'
 import { IUser, Roles } from "../interfaces/user.interface";
 import * as bcrypt from 'bcrypt'
 import { Report } from 'src/common/commissions/reports/index/entities/Report.entity';
+import { ReportComment } from "../../commissions/reports/comments/entities/ReportComment.entity";
 
 @Entity("users")
 export class User extends Model implements IUser {
@@ -23,6 +24,9 @@ export class User extends Model implements IUser {
 
     @OneToMany(() => Report, report => report.user)
     reports: Report[]
+    
+    @OneToMany(() => ReportComment, comment => comment.author)
+    reportsComments: ReportComment[]
 
     @BeforeInsert()
     hashPassword() {
