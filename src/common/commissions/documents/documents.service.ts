@@ -6,6 +6,7 @@ import { FilesService } from "../../files/files.service";
 import { CommissionDocument } from "./entities/CommissionDocument.entity";
 import { CreateCommissionDocumentDto } from "./dto/create-commission-document.dto";
 import { CommissionsService } from "../index/commissions.service";
+import { DeleteResult } from "typeorm";
 
 @Injectable()
 export class DocumentsService implements IDocumentsService {
@@ -32,6 +33,16 @@ export class DocumentsService implements IDocumentsService {
             const document = this.documentsRepository.create(dto)
             return this.documentsRepository.save(document)
         }))
+    }
+
+    getDocument(documentId: number): Promise<CommissionDocument> {
+        return this.documentsRepository.getDocument(documentId)
+    }
+
+    async deleteDocument(documentId: number): Promise<DeleteResult> {
+        const document = await this.getDocument(documentId)
+        await this.filesService.removeFile(document.path)
+        return this.documentsRepository.delete(documentId)
     }
 
 }

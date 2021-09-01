@@ -6,6 +6,7 @@ import {ReportDocument} from "./entities/ReportDocument.entity";
 import { IDocumentsController } from "./interfaces/documents-controller.inteface";
 import {Auth} from "../../../auth/auth.decorator";
 import { DocumentsService } from "./documents.service";
+import { DeleteResult } from "typeorm";
 
 @ApiTags('Documents Of Report')
 @Controller('reports/:reportId/documents')
@@ -27,7 +28,7 @@ export class DocumentsController implements IDocumentsController {
 
     @Auth()
     @Delete(':documentId')
-    async deleteDocument(@Param('documentId', ParseIntPipe) documentId: number) {
+    async deleteDocument(@Param('documentId', ParseIntPipe) documentId: number): Promise<DeleteResult> {
         return this.documentsService.deleteDocument(documentId)
     }
 
