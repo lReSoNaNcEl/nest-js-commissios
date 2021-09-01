@@ -1,4 +1,4 @@
-import {Model} from '../../../../../core/database/entities/Model'
+import {Model} from "../../../../../core/database/entities/model"
 import { Column, Entity,  ManyToOne, RelationId } from 'typeorm';
 import {IReportComment} from '../interfaces/report-comment.interface'
 import { User } from "../../../../users/entities/User.entity";
