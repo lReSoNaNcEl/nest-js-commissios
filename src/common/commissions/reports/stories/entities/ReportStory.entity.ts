@@ -23,7 +23,7 @@ export class ReportStory extends Model implements IReportStory {
     @ManyToOne(() => User, {eager: true})
     inspector: User
 
-    @ManyToOne(() => Report, report => report.stories)
+    @ManyToOne(() => Report, report => report.stories, {onDelete: 'CASCADE'})
     report: Report
 
     @RelationId((story: ReportStory) => story.report)
