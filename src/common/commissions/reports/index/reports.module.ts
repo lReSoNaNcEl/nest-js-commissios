@@ -14,6 +14,10 @@ import { SourcesService } from "../../sources/sources.service"
 import {DocumentsModule} from "../documents/documents.module"
 import { FilesService } from "../../../files/files.service";
 import { ReportsCommentsModule } from "../comments/reports-comments.module";
+import { ReportVerifiedListener } from "./listeners/report-verified.listener";
+import { ReportsStoriesModule } from "../stories/reports-stories.module";
+import { ReportsStoriesService } from "../stories/reports-stories.service";
+import { ReportsStoriesRepository } from "../stories/reports-stories.repository";
 
 @Module({
     imports: [
@@ -23,9 +27,11 @@ import { ReportsCommentsModule } from "../comments/reports-comments.module";
             CommissionsRepository,
             CategoriesRepository,
             SourcesRepository,
+            ReportsStoriesRepository
         ]),
         ReportsCommentsModule,
-        DocumentsModule
+        DocumentsModule,
+        ReportsStoriesModule
     ],
     controllers: [ReportsController],
     providers: [
@@ -35,6 +41,8 @@ import { ReportsCommentsModule } from "../comments/reports-comments.module";
         CategoriesService,
         SourcesService,
         FilesService,
+        ReportsStoriesService,
+        ReportVerifiedListener
     ],
     exports: [ReportsService],
 })
