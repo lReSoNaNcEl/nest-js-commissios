@@ -65,6 +65,7 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         let qb = this.createQueryBuilder('commission')
 
         qb.innerJoinAndMapMany('commission.reports', Report, 'report', 'commission.id = report.commission.id')
+            .leftJoinAndSelect('report.comments', 'comments')
             .leftJoinAndSelect('report.user', 'user')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
@@ -84,6 +85,8 @@ export class CommissionsRepository extends Repository<Commission> implements ICo
         qb = this.setSearchCommissionsToQueryBuilder(qb, searchQuery)
 
         qb.innerJoinAndMapMany('commission.reports', Report, 'report', `commission.id = report.commission.id and report.user.id = :userId`, {userId})
+            .leftJoinAndSelect('report.comments', 'comments')
+            .leftJoinAndSelect('report.user', 'user')
             .leftJoinAndSelect('commission.category', 'category')
             .leftJoinAndSelect('commission.source', 'source')
             .leftJoinAndSelect('commission.documents', 'documents')
