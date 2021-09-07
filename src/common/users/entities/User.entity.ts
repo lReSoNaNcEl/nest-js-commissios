@@ -1,5 +1,5 @@
 import {Model} from '../../../core/database/entities/model'
-import {Column, Entity, JoinColumn, OneToMany, OneToOne, BeforeInsert} from 'typeorm'
+import {Column, Entity, OneToMany, BeforeInsert} from 'typeorm'
 import {Exclude} from 'class-transformer'
 import { IUser, Roles } from "../interfaces/user.interface";
 import * as bcrypt from 'bcrypt'
