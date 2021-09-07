@@ -9,7 +9,7 @@ import { ReportComment } from "../../commissions/reports/comments/entities/Repor
 @Entity("users")
 export class User extends Model implements IUser {
 
-    @Column({unique: true})
+    @Column({unique: true, length: 255})
     email: string
 
     @Exclude({toPlainOnly: true})
