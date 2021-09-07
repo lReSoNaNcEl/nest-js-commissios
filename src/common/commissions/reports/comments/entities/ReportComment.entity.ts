@@ -2,7 +2,7 @@ import {Model} from "../../../../../core/database/entities/model"
 import { Column, Entity,  ManyToOne, RelationId } from 'typeorm';
 import {IReportComment} from '../interfaces/report-comment.interface'
 import { User } from "../../../../users/entities/User.entity";
-import { Report } from "../../index/entities/Report.entity";
+import { Report } from "../../index/entities/Report.entity"
 
 @Entity('reports_comments')
 export class ReportComment extends Model implements IReportComment {
