@@ -9,7 +9,7 @@ import { ReportComment } from "../../commissions/reports/comments/entities/Repor
 @Entity("users")
 export class User extends Model implements IUser {
 
-    @Column({unique: true, length: 20})
+    @Column({unique: true})
     email: string
 
     @Exclude({toPlainOnly: true})
@@ -24,7 +24,7 @@ export class User extends Model implements IUser {
 
     @OneToMany(() => Report, report => report.user)
     reports: Report[]
-    
+
     @OneToMany(() => ReportComment, comment => comment.author)
     reportsComments: ReportComment[]
 
