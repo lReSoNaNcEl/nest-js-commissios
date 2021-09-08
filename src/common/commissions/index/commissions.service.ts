@@ -65,8 +65,8 @@ export class CommissionsService implements ICommissionsService {
     async updateCommission(dto: UpdateCommissionDto, commissionId: number): Promise<Commission> {
         const commission = await this.commissionsRepository.getCommission(commissionId)
         const {categoryId, sourceId} = dto
-        const category: Category = await this.categoriesService.getCategory(categoryId)
-        const source: Source = await this.sourcesService.getSource(sourceId)
+        const category: Category = await this.categoriesService.getCategory(categoryId) || commission.category
+        const source: Source = await this.sourcesService.getSource(sourceId) || commission.category
 
         await this.commissionsRepository.save({id: commission.id, ...dto, category, source})
         return this.commissionsRepository.getCommission(commissionId)
