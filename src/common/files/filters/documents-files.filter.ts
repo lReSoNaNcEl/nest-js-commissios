@@ -4,7 +4,9 @@ import { Request } from "express";
 
 export const formats = [
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/pdf'
+    'application/pdf',
+    'image/tiff',
+    'image/tiff-fx'
 ]
 
 export const multerOptions = <MulterOptions>{

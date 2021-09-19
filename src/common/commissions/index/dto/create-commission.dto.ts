@@ -8,7 +8,7 @@ import {
     IsString,
     IsPositive,
     ArrayMinSize,
-    Max, MaxLength
+    MaxLength
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
@@ -50,8 +50,15 @@ export class CreateCommissionDto {
 
     @ApiProperty({example: faker.finance.currencyCode()})
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     positionNumber: string
+
+
+    @ApiProperty({example: faker.finance.currencyCode()})
+    @IsString()
+    @IsOptional()
+    documentNumber: string
+
 
     @ApiProperty({example: faker.date.recent()})
     @IsDate()

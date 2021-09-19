@@ -28,8 +28,11 @@ export class Commission extends Model implements ICommission {
     @Column({nullable: true})
     registrationCardNumber: string
 
-    @Column()
+    @Column({nullable: true})
     positionNumber: string
+
+    @Column({nullable: true})
+    documentNumber: string
 
     @Column({type: 'timestamp'})
     release: string

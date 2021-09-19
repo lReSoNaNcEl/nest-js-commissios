@@ -51,6 +51,11 @@ export class UpdateCommissionDto {
     @IsOptional()
     positionNumber: string
 
+    @ApiProperty({example: faker.finance.currencyCode(), required: false})
+    @IsString()
+    @IsOptional()
+    documentNumber: string
+
     @ApiProperty({example: faker.date.recent(), required: false})
     @IsDate()
     @Type(() => Date)
