@@ -62,6 +62,11 @@ export class CommissionsService implements ICommissionsService {
         return this.getCommission(commission.id)
     }
 
+    @Cron(CronExpression.EVERY_SECOND)
+    async test() {
+        console.log('2');
+    }
+
     async updateCommission(dto: UpdateCommissionDto, commissionId: number): Promise<Commission> {
         const commission = await this.commissionsRepository.getCommission(commissionId)
         const {categoryId, sourceId} = dto

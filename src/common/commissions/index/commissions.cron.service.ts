@@ -5,6 +5,7 @@ import { CommissionsRepository } from "./commissions.repository";
 import { ReportsRepository } from "../reports/index/reports.repository";
 import { ReportStatus } from "../reports/index/entities/Report.entity";
 import { ICommissionsCronService } from "./interfaces/commissions-cron-service.interface";
+import { ReportsService } from '../reports/index/reports.service';
 
 @Injectable()
 export class CommissionsCronService implements ICommissionsCronService {
@@ -12,7 +13,8 @@ export class CommissionsCronService implements ICommissionsCronService {
     constructor(
         private schedulerRegistry: SchedulerRegistry,
         private commissionsRepository: CommissionsRepository,
-        private reportsRepository: ReportsRepository
+        private reportsRepository: ReportsRepository,
+        private reportsService: ReportsService
     ) {
     }
 
@@ -29,6 +31,11 @@ export class CommissionsCronService implements ICommissionsCronService {
         })
 
         await Promise.all(reports.map(report => this.reportsRepository.update(report.id, {status: ReportStatus.EXPIRED})))
+    }
+
+    @Cron(CronExpression.EVERY_SECOND)
+    async test() {
+        console.log('1');
     }
 
 }
