@@ -10,6 +10,7 @@ import { UsersRepository } from "../../users/users.repository";
 import { DocumentsModule } from "../documents/documents.module";
 import { CommissionsCronService } from "./commissions.cron.service";
 import { ReportsRepository } from "../reports/index/reports.repository";
+import { CommissionsCronCreatingListener } from './listeners/commissions-cron-creating.listener'
 
 @Module({
     imports: [
@@ -20,7 +21,7 @@ import { ReportsRepository } from "../reports/index/reports.repository";
         DocumentsModule
     ],
     controllers: [CommissionsController],
-    providers: [CommissionsService, CommissionsCronService],
+    providers: [CommissionsService, CommissionsCronService, CommissionsCronCreatingListener],
     exports: [CommissionsService]
 })
 export class CommissionsModule {}

@@ -5,8 +5,7 @@ import { CommissionsRepository } from "./commissions.repository";
 import { ReportsRepository } from "../reports/index/reports.repository";
 import { ReportStatus } from "../reports/index/entities/Report.entity";
 import { ICommissionsCronService } from "./interfaces/commissions-cron-service.interface";
-import { ReportsService } from '../reports/index/reports.service';
-
+import { EventEmitter2 } from '@nestjs/event-emitter';
 @Injectable()
 export class CommissionsCronService implements ICommissionsCronService {
 
@@ -14,7 +13,7 @@ export class CommissionsCronService implements ICommissionsCronService {
         private schedulerRegistry: SchedulerRegistry,
         private commissionsRepository: CommissionsRepository,
         private reportsRepository: ReportsRepository,
-        private reportsService: ReportsService
+        private eventEmitter: EventEmitter2
     ) {
     }
 
@@ -36,7 +35,8 @@ export class CommissionsCronService implements ICommissionsCronService {
 
     @Cron(CronExpression.EVERY_SECOND)
     async test() {
-        console.log('1');
+        console.log('sdfs');
+        this.eventEmitter.emit('commissions-cron-creating')
     }
 
 }
