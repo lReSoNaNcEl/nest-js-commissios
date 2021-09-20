@@ -10,11 +10,11 @@ export class FilesController {
     ) {
     }
 
-    @Post('files')
-    @UseInterceptors(FilesInterceptor('files'))
-    uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
-        return this.filesService.uploadFiles(files)
-    }
+    // @Post('files')
+    // @UseInterceptors(FilesInterceptor('files'))
+    // uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    //     return this.filesService.uploadFiles(files)
+    // }
 }
 
 

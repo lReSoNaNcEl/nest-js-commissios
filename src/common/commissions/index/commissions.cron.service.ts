@@ -30,7 +30,8 @@ export class CommissionsCronService implements ICommissionsCronService {
             relations: ['commission']
         })
 
-        await Promise.all(reports.map(report => this.reportsRepository.update(report.id, {status: ReportStatus.EXPIRED})))
+        // await Promise.all(reports.map(report => this.reportsRepository.update(report.id, {status: ReportStatus.EXPIRED})))
+        await this.reportsRepository.update(reports.map(report => report.id), {status: ReportStatus.EXPIRED})
     }
 
     @Cron(CronExpression.EVERY_SECOND)
